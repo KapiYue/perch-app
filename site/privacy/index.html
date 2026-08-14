@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>隐私政策 — Perch · 栖架</title>
+<meta name="description" content="Perch 栖架的隐私政策：数据只保存在本机，不上传任何服务器。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23000'/><rect x='18' y='0' width='28' height='14' rx='7' fill='%230a84ff'/></svg>">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <nav>
+      <a href="/features">产品介绍</a>
+      <a href="/privacy">隐私政策</a>
+      <a href="/support">支持</a>
+      <a href="/credits">致谢</a>
+    </nav>
+    <a class="btn-sm" href="/#download">下载</a>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="doc">
+  <h1>隐私政策</h1>
+  <p class="updated">最后更新：2026 年 8 月 13 日 · 适用于 Perch（栖架）macOS 应用及本网站</p>
+
+  <div class="doc-box warn">
+    <h3>⚠️ 请务必先读这一段</h3>
+    <p><b>Perch 会记录你复制的一切内容，并保存到你的 Mac 本地磁盘。</b>这包括你从密码管理器中复制的密码、验证码、身份证号等任何敏感信息。</p>
+    <p>Perch <b>不会</b>尝试识别哪些内容是敏感的。我们认为，基于猜测的「智能过滤」会给你一种不可靠的安全感——它一定会漏，而漏掉的那次恰恰最危险。所以我们选择把事实完整告诉你，把控制权交给你。</p>
+    <p>如果你不接受这一点，请不要安装 Perch。</p>
+  </div>
+
+  <h2>一、我们收集什么</h2>
+  <p>准确地说，Perch <b>不「收集」任何数据</b>——没有任何信息离开你的设备。下面列出的是 Perch 在你本机上<b>保存</b>的内容：</p>
+  <ul>
+    <li>你复制到系统剪贴板的文本、链接、图片</li>
+    <li>你主动拖入 Perch 面板的文件（会被完整拷贝一份）</li>
+    <li>上述条目的元数据：类型、大小、创建时间、是否固定</li>
+    <li>你的应用设置：保存时长、全局快捷键、是否开机启动、监听是否暂停</li>
+  </ul>
+  <p>Perch <b>不读取</b>你的通讯录、日历、照片库、浏览记录、位置或任何其他系统数据。</p>
+
+  <h2>二、数据保存在哪里</h2>
+  <p>全部数据只存在于你的 Mac 上，路径为：</p>
+  <div class="tree">~/Library/Application Support/Perch/
+├── index.json        <i>条目元数据（只存路径，不存内容本体）</i>
+└── blobs/&lt;uuid&gt;/
+    ├── content.*     <i>图片 / 文件本体</i>
+    └── thumb.jpg     <i>缩略图</i></div>
+  <p>这个目录随你的用户账户存在。如果你开启了 Time Machine 或 iCloud 云盘备份整个用户目录，该目录可能会被你自己的备份方案一并备份——这是你的备份设置决定的，不是 Perch 的行为。</p>
+
+  <h2>三、我们不做什么</h2>
+  <ul>
+    <li><b>不上传。</b>Perch 不会把你的任何内容发送到我们或第三方的服务器</li>
+    <li><b>没有账号系统。</b>不需要注册、不需要登录</li>
+    <li><b>没有云同步。</b>不使用 iCloud、不提供跨设备同步</li>
+    <li><b>没有遥测和统计。</b>不采集使用行为、不上报崩溃日志、不集成任何分析 SDK</li>
+    <li><b>没有广告。</b>应用内不含任何广告或广告 SDK</li>
+    <li><b>不做密码识别。</b>见页首说明</li>
+  </ul>
+
+  <h2>四、唯一的网络请求：检查更新</h2>
+  <p>Perch 使用 <a href="https://sparkle-project.org/" target="_blank" rel="noopener noreferrer">Sparkle</a> 进行自动更新。检查更新时，Perch 会向我们的更新源请求一个版本描述文件。该请求会不可避免地让服务器看到你的 IP 地址、操作系统版本和当前 Perch 版本号——这是 HTTP 请求的固有属性，我们不会记录、关联或分析这些信息。</p>
+  <p><b>你可以在设置中关闭自动检查更新。</b>关闭后 Perch 不会发起任何网络请求。</p>
+
+  <h2>五、你的控制权</h2>
+  <ul>
+    <li><b>随时暂停监听。</b>面板头部有常驻可见的暂停按钮（⏸），点一下立即停止记录剪贴板，状态跨重启保留</li>
+    <li><b>自动过期。</b>默认 12 小时后自动清理，可改为 1 小时 / 24 小时 / 7 天 / 永不。清理时会同步删除磁盘上的文件</li>
+    <li><b>单条移除。</b>每一条都可以随时单独删除</li>
+    <li><b>抹掉全部数据。</b>设置中提供一键清空，会删除上述整个目录</li>
+    <li><b>跳过机密内容（可选，默认关闭）。</b>部分密码管理器会在剪贴板上打 <code>org.nspasteboard.ConcealedType</code> 标记。开启此项后 Perch 会跳过带此标记的内容。这是<b>尊重来源应用的显式声明</b>，不是我们去猜测内容，因此可靠性取决于来源应用是否规范打标</li>
+    <li><b>直接删除数据目录。</b>你也可以在访达中直接删掉上面那个目录</li>
+  </ul>
+
+  <h2>六、权限</h2>
+  <p>Perch 不申请以下权限：</p>
+  <ul>
+    <li>辅助功能（Accessibility）</li>
+    <li>屏幕录制</li>
+    <li>完全磁盘访问</li>
+    <li>通讯录、日历、照片、位置、麦克风、摄像头</li>
+  </ul>
+  <p>Perch 也不安装全局鼠标钩子或输入监听。剪贴板读取使用的是 macOS 公开的 <code>NSPasteboard</code> 接口，该接口在 macOS 上不需要用户授权——这也正是我们必须把记录行为写在最显眼位置的原因。</p>
+  <p>Perch 关闭了 App Sandbox，因为沙盒会导致「把内容拖出成真文件」失效。这意味着 Perch 在技术上具备访问你文件系统的能力。我们的承诺是它只读写自己的数据目录和你主动拖入的文件；<b>你可以通过审阅源码来验证这一点</b>，代码完全开源。</p>
+
+  <h2>七、本网站</h2>
+  <p>本网站（perch.joy-coder.com）是纯静态页面，不设置任何 Cookie，不使用统计或分析服务，不含第三方追踪脚本。服务器会产生常规的访问日志（IP、时间、请求路径、User-Agent），仅用于安全排查，不用于用户画像。</p>
+  <p>软件安装包托管于腾讯云对象存储，下载时该服务会按其自身规则记录访问日志。</p>
+
+  <h2>八、儿童</h2>
+  <p>Perch 是通用生产力工具，不面向 14 周岁以下儿童设计，也不会主动收集任何年龄信息。</p>
+
+  <h2>九、变更</h2>
+  <p>本政策如有修改，会更新本页顶部的日期，重大变更会在应用更新说明中一并告知。历史版本可在 <a href="https://github.com/KapiYue/perch-app" target="_blank" rel="noopener noreferrer">GitHub 仓库</a>的提交记录中查阅。</p>
+
+  <h2>十、联系</h2>
+  <p>隐私相关问题请通过 <a href="/support">支持页面</a>联系，或直接在 GitHub 提 Issue。</p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <span class="copy">© 2026 · MIT License</span>
+    <nav>
+      <a href="/features">产品介绍</a>
+      <a href="/privacy">隐私政策</a>
+      <a href="/support">支持</a>
+      <a href="/credits">致谢</a>
+      <a href="https://github.com/KapiYue/perch-app">GitHub</a>
+    </nav>
+    <div class="beian">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026055717号-2</a>
+      <a class="police" href="https://beian.mps.gov.cn/#/query/webSearch?code=33010502013311" target="_blank" rel="noopener noreferrer"><img src="/assets/police-filing-icon.png" alt="" width="18" height="18">浙公网安备33010502013311号</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

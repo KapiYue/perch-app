@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>支持 — Perch · 栖架</title>
+<meta name="description" content="Perch 栖架的支持中心：安装问题、常见故障、反馈渠道与使用条款。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23000'/><rect x='18' y='0' width='28' height='14' rx='7' fill='%230a84ff'/></svg>">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <nav>
+      <a href="/features">产品介绍</a>
+      <a href="/privacy">隐私政策</a>
+      <a href="/support">支持</a>
+      <a href="/credits">致谢</a>
+    </nav>
+    <a class="btn-sm" href="/#download">下载</a>
+  </div>
+</header>
+
+<main class="wrap">
+<article class="doc">
+  <h1>支持</h1>
+  <p class="updated">最后更新：2026 年 8 月 13 日</p>
+
+  <div class="doc-box">
+    <h3>怎么找到我们</h3>
+    <p><b>报 Bug 或提功能建议</b>（推荐）：<a href="https://github.com/KapiYue/perch-app/issues" target="_blank" rel="noopener noreferrer">GitHub Issues</a>。公开可查，处理进度你能看到。</p>
+    <p><b>邮件</b>：<a href="mailto:zdjoey@126.com">zdjoey@126.com</a>。不方便用 GitHub 时走这里，一般 3 个工作日内回复。</p>
+    <p>提问时请附上：macOS 版本、Perch 版本（菜单栏 → 关于）、具体操作步骤。</p>
+  </div>
+
+  <h2>安装与启动</h2>
+
+  <h3>提示「无法打开，因为无法验证开发者」</h3>
+  <p>正式版已做 Developer ID 签名和 Apple 公证，正常不会出现此提示。如果出现，说明你下载的可能不是官网或 GitHub Releases 的原始文件，请重新下载。若确认来源无误，可在「系统设置 → 隐私与安全性」中点「仍要打开」。</p>
+
+  <h3>提示「App 已损坏，无法打开」</h3>
+  <p>这通常是下载过程被中断或被网络中间设备篡改导致的。请重新完整下载一次。使用自行构建版本（ad-hoc 签名）时也可能出现此提示，属于预期行为。</p>
+
+  <h3>装完之后找不到窗口</h3>
+  <p>Perch 没有 Dock 图标（<code>LSUIElement</code>），启动后常驻菜单栏。把鼠标移到<b>屏幕顶部正中</b>，或按 <span class="kbd">⌘⇧V</span> 唤出面板。</p>
+
+  <h2>使用中的常见问题</h2>
+
+  <h3>复制了东西但没有上架</h3>
+  <ul>
+    <li>检查面板头部的暂停按钮（⏸）是否处于暂停状态</li>
+    <li>如果开启了「跳过被标记为机密的内容」，来自密码管理器的内容会被主动跳过</li>
+    <li>与最新一条完全相同的内容不会新增，只会重置那一条的倒计时——这是预期行为</li>
+  </ul>
+
+  <h3>内容突然消失了</h3>
+  <p>Perch 唯一的自动清理依据是<b>保存时长</b>，默认 12 小时。要长期保留某一条，<b>双击该行固定它</b>，固定的条目永不过期。另外剪贴板区最多保留 200 条，超出会丢弃最旧的（固定项不参与淘汰）。</p>
+
+  <h3>拖不出去 / 拖到目标位置没反应</h3>
+  <p>部分应用的拖放区域实现不标准，只接受特定类型。可以先试着拖到访达或桌面确认 Perch 侧正常，再判断是不是目标应用的问题。遇到具体应用拖不进去，欢迎提 Issue 告诉我们是哪个。</p>
+
+  <h3>外接显示器上唤不出来</h3>
+  <p>面板会出现在<b>鼠标当前所在的那块屏幕</b>上。如果刚接上显示器时异常，可以先移动一下鼠标；仍不正常请提 Issue 并附上显示器分辨率和排列方式。</p>
+
+  <h2>卸载</h2>
+  <p>把 <code>Perch.app</code> 拖到废纸篓即可。如需同时删除数据，再删掉这个目录：</p>
+  <div class="tree">~/Library/Application Support/Perch/</div>
+  <p>也可以在卸载前先用设置里的「抹掉全部数据」。Perch 不安装任何系统级组件、后台守护进程或内核扩展。</p>
+
+  <h2>使用条款</h2>
+  <p>Perch 以 <b>MIT 许可证</b>开源发布，条款以<a href="https://github.com/KapiYue/perch-app/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">仓库中的 LICENSE 文件</a>为准。以下为要点说明，与 LICENSE 原文冲突时以原文为准：</p>
+  <ul>
+    <li>你可以自由使用、复制、修改和分发本软件，包括商业用途</li>
+    <li>分发时需保留原始版权声明和许可声明</li>
+    <li><b>本软件按「现状」提供，不附带任何明示或默示的担保</b>，包括适销性、特定用途适用性和非侵权性</li>
+    <li><b>作者不对使用本软件产生的任何损失负责</b>，包括但不限于数据丢失</li>
+  </ul>
+  <p>请特别注意：Perch 是一个<b>临时中转工具，不是备份工具</b>。架上的内容默认会在设定时长后自动删除。<b>请不要把 Perch 当作唯一的数据保管处。</b></p>
+  <p>另请阅读<a href="/privacy">隐私政策</a>，其中说明了 Perch 会记录你复制的一切内容这一关键事实。</p>
+
+  <h2>安全问题上报</h2>
+  <p>如果你发现了可能影响用户数据安全的漏洞，<b>请不要公开提 Issue</b>，先发邮件到 <a href="mailto:zdjoey@126.com">zdjoey@126.com</a>，我们会在修复后再公开披露。</p>
+</article>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <span class="copy">© 2026 · MIT License</span>
+    <nav>
+      <a href="/features">产品介绍</a>
+      <a href="/privacy">隐私政策</a>
+      <a href="/support">支持</a>
+      <a href="/credits">致谢</a>
+      <a href="https://github.com/KapiYue/perch-app">GitHub</a>
+    </nav>
+    <div class="beian">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026055717号-2</a>
+      <a class="police" href="https://beian.mps.gov.cn/#/query/webSearch?code=33010502013311" target="_blank" rel="noopener noreferrer"><img src="/assets/police-filing-icon.png" alt="" width="18" height="18">浙公网安备33010502013311号</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

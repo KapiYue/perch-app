@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>产品介绍 — Perch · 栖架</title>
+<meta name="description" content="Perch 栖架的完整产品介绍：面板结构、剪贴板区、文件区、数据规则、权限说明与快捷键。">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23000'/><rect x='18' y='0' width='28' height='14' rx='7' fill='%230a84ff'/></svg>">
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <nav>
+      <a href="#panel">面板</a>
+      <a href="#clipboard">剪贴板区</a>
+      <a href="#files">文件区</a>
+      <a href="#rules">数据规则</a>
+      <a href="#shortcuts">快捷键</a>
+      <a href="#choices">设计取舍</a>
+    </nav>
+    <a class="btn-sm" href="/#download">下载</a>
+  </div>
+</header>
+
+<section class="page-head">
+  <div class="wrap">
+    <span class="eyebrow">产品介绍</span>
+    <h1 style="font-size:clamp(30px,4.4vw,46px)">一块随时够得着的<br>临时货架。</h1>
+    <p class="lead" style="margin-top:20px">
+      Perch 只解决一件事：你手上的东西暂时没地方放，又不想丢。
+      下面是它的全部结构、规则和边界——包括我们明确决定不做的那些。
+    </p>
+  </div>
+</section>
+
+<!-- ══ 面板解剖 ══ -->
+<section class="sec" id="panel">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">01 · 面板</div>
+      <h2>上下分区，不是一个大列表。</h2>
+      <p>剪贴板条目小而多，需要横着一眼扫完；文件大而少，需要缩略图和批量操作。
+         混在一个列表里两边都憋屈，所以分成上下两段。</p>
+    </div>
+
+    <div class="anno">
+      <div class="steps">
+        <div class="step">
+          <span class="n">1</span>
+          <div><h3>头部</h3><p>标题、总量统计（条数 · 文件数 · 占用），以及常驻可见的 <b>⏸ 暂停监听</b> 和 <b>⚙ 设置</b>。暂停状态跨重启保留。</p></div>
+        </div>
+        <div class="step">
+          <span class="n">2</span>
+          <div><h3>剪贴板区 · 文本列表</h3><p>每行一条，最多 200 条，超出高度滚动。前九条带 <span class="kbd">⌘1</span>–<span class="kbd">⌘9</span> 序号，图片显示真实缩略图，链接用绿色区分。</p></div>
+        </div>
+        <div class="step">
+          <span class="n">3</span>
+          <div><h3>文件区 · 网格</h3><p>每格显示图标或缩略图、文件名、大小与剩余时长。<span class="kbd">⌘</span> / <span class="kbd">Shift</span> 多选后底部浮出批量操作条。</p></div>
+        </div>
+        <div class="step">
+          <span class="n">4</span>
+          <div><h3>底部状态条</h3><p>监听状态一眼可见，右侧常驻快捷键提示。绿点亮着就是在收，暂停后变灰。</p></div>
+        </div>
+        <div class="step">
+          <span class="n">5</span>
+          <div><h3>不抢焦点</h3><p>面板展开时，前台 App 的输入光标不会消失。你可以一边在编辑器里打字，一边唤出 Perch 取一条内容，光标还在原处。</p></div>
+        </div>
+      </div>
+
+      <div class="mini-panel">
+        <div class="panel">
+          <div class="p-head">
+            <span class="t">栖架</span>
+            <span class="s">12 条 · 6 个文件</span>
+            <span class="ibtn">⏸</span><span class="ibtn">⚙</span>
+          </div>
+          <div class="p-sec">
+            <div class="p-sec-hd"><h4>剪贴板</h4><span class="n">12</span><span class="sp"></span><span class="a">清空</span></div>
+            <div class="crow hl">
+              <span class="idx">⌘1</span><span class="ic text">✎</span>
+              <span class="txt"><span class="p">埋点方案对齐，口径按新版走</span><span class="m">3 分钟前 · 11 小时后清理</span></span>
+            </div>
+            <div class="crow">
+              <span class="idx">⌘2</span><span class="ic link">🔗</span>
+              <span class="txt"><span class="p lk">github.com/KapiYue/perch-app</span><span class="m">14 分钟前 · 固定</span></span>
+            </div>
+            <div class="crow">
+              <span class="idx">⌘3</span><span class="ic image">🖼</span>
+              <span class="txt"><span class="p">截图 143022.png</span><span class="m">1 小时前 · 10 小时后清理</span></span>
+            </div>
+          </div>
+          <div class="p-sec">
+            <div class="p-sec-hd"><h4>文件</h4><span class="n">6</span><span class="sp"></span><span class="a">添加文件…</span></div>
+            <div class="fgrid">
+              <div class="fcell sel"><span class="fi">🎨</span><span class="fn">封面</span></div>
+              <div class="fcell sel"><span class="fi">📘</span><span class="fn">规范</span></div>
+              <div class="fcell"><span class="fi">🗜</span><span class="fn">素材</span></div>
+              <div class="fcell"><span class="fi">🎬</span><span class="fn">demo</span></div>
+            </div>
+          </div>
+          <div class="p-foot"><span class="live"></span><span>剪贴板监听中</span><span class="sp"></span><span>⌘⇧V</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 剪贴板区 ══ -->
+<section class="sec" id="clipboard">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">02 · 剪贴板区</div>
+      <h2>复制即上架，不需要你先想起它。</h2>
+      <p>后台每 0.5 秒检查一次系统剪贴板的变更计数，变了才读内容。类型按优先级判定：
+         图片 &gt; 文件 URL &gt; 链接 &gt; 纯文本。文件 URL 会自动进文件区，不占剪贴板的位置。</p>
+    </div>
+
+    <div class="grid g4">
+      <div class="card">
+        <div class="ico i-orange">✎</div>
+        <h3>文本</h3>
+        <p>单行截断预览，拖出时生成 .txt。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-green">🔗</div>
+        <h3>链接</h3>
+        <p>以 http/https 开头自动识别，绿色显示。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-purple">🖼</div>
+        <h3>图片</h3>
+        <p>行首直接显示 26pt 真实缩略图，拖出即 .png。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-blue">📎</div>
+        <h3>文件</h3>
+        <p>复制的文件路径自动转入下方文件区。</p>
+      </div>
+    </div>
+
+    <div style="margin-top:44px" class="split">
+      <div class="pane">
+        <h3>复制反馈只做行内</h3>
+        <p style="color:var(--dim);font-size:14px">
+          点中的那一行短暂变绿并描一圈边，右侧弹出「✓ 已复制」标签，约 1.1 秒后消失。
+          不在屏幕底部弹全局 toast——此刻你的视线就在这一行上，让你去看屏幕另一头是错的。
+        </p>
+        <p style="color:var(--faint);font-size:13px;margin-top:12px">
+          唯一例外：用 <span class="kbd">⌘N</span> 时面板是收起的，行内反馈看不见，这时才退回一条轻量提示。
+        </p>
+      </div>
+      <div class="pane">
+        <h3>拖出去是「真文件」</h3>
+        <p style="color:var(--dim);font-size:14px">
+          剪贴板里的内容在磁盘上未必是一个完整文件。Perch 用系统的文件承诺机制（NSFilePromiseProvider），
+          在你<b style="color:var(--text)">松手的那一刻</b>才把文件写出来，落在你放下的位置。
+        </p>
+        <p style="color:var(--faint);font-size:13px;margin-top:12px">
+          所以一段文字可以直接拖进邮件附件区，一张截图可以直接拖进聊天窗口或网页上传框。
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 文件区 ══ -->
+<section class="sec" id="files">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">03 · 文件区</div>
+      <h2>拖进来，切个 Space，再拖出去。</h2>
+      <p>典型场景：从访达翻出三个文件，扔进栖架；切到浏览器，一次全拖进上传框。
+         中途不用来回切窗口、不用怕误关文件夹。</p>
+    </div>
+
+    <div class="grid g3">
+      <div class="card">
+        <div class="ico i-blue">☑</div>
+        <h3>多选与批量</h3>
+        <p>单击选中，<span class="kbd">⌘</span>/<span class="kbd">Shift</span> 多选，<span class="kbd">⌘A</span> 全选，<span class="kbd">Esc</span> 取消。
+           选中后底部浮出：拖出 / 打包 ZIP / 固定 / 移除。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-orange">🗜</div>
+        <h3>打包 ZIP</h3>
+        <p>多选后一键打包成 <code style="display:inline;padding:1px 5px">Perch-20260813-143022.zip</code>，
+           新条目直接入架，原条目保留。打完就能拖走。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-green">👁</div>
+        <h3>预览与右键</h3>
+        <p>空格键 Quick Look 预览，双击用默认 App 打开。右键：在访达中显示 / 复制路径 / 重命名 / 固定 / AirDrop 分享。</p>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:32px;border-color:rgba(10,132,255,.28);background:rgba(10,132,255,.05)">
+      <h3 style="color:#6ab4ff">📌 拖进来的文件会被拷贝一份</h3>
+      <p>Perch 不是存一个路径引用，而是把文件真的拷进自己的存储目录。
+         这样你之后移动、重命名甚至删掉原文件，架上这份都还在。代价是会占磁盘，所以面板头部一直显示当前占用。</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 数据规则 ══ -->
+<section class="sec" id="rules">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">04 · 数据规则</div>
+      <h2>东西什么时候消失，规则只有一条。</h2>
+      <p>没有隐藏的清理触发条件，没有「智能」判断。只有一个你自己设的时长。</p>
+    </div>
+
+    <div class="grid g3" style="margin-bottom:32px">
+      <div class="card">
+        <div class="ico i-orange">⏱</div>
+        <h3>自动保存时长</h3>
+        <p>1 小时 / 12 小时 / 24 小时 / 7 天 / 永不，默认 <b style="color:var(--text)">12 小时</b>。
+           从上架时刻起算，每 60 秒扫描一次。<b style="color:var(--text)">固定的条目永不过期。</b></p>
+      </div>
+      <div class="card">
+        <div class="ico i-blue">⧉</div>
+        <h3>去重只比最新一条</h3>
+        <p>新内容如果和当前区域最新那条完全相同，不新增，只把它的倒计时重置。
+           剪贴板区和文件区各自独立比较，不做全表扫描、不算哈希。</p>
+      </div>
+      <div class="card">
+        <div class="ico i-purple">💾</div>
+        <h3>跨重启保留</h3>
+        <p>关掉 App 再打开，内容都还在。索引采用原子写（先写临时文件再改名），
+           崩溃也不会损坏。剪贴板最多 200 条，超出淘汰最旧的。</p>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:14px">数据存在哪里</h3>
+    <div class="tree">~/Library/Application Support/Perch/
+├── <b>index.json</b>        <i>← 条目元数据，只存路径不存内容</i>
+└── <b>blobs/</b>
+    └── &lt;uuid&gt;/
+        ├── <b>content.png</b>  <i>← 图片 / 文件本体</i>
+        └── <b>thumb.jpg</b>    <i>← 缩略图</i></div>
+    <p style="color:var(--faint);font-size:13px;margin-top:14px">
+      条目到期时对应的 blobs 目录会同步删除，不留孤儿文件。设置里的「抹掉全部数据」会清空整个目录。
+    </p>
+  </div>
+</section>
+
+<!-- ══ 快捷键 ══ -->
+<section class="sec" id="shortcuts">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">05 · 快捷键</div>
+      <h2>常用操作都能不碰鼠标。</h2>
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th style="width:26%">快捷键</th><th style="width:34%">作用</th><th>说明</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">⌘⇧V</span></td><td class="me">唤出 / 收起面板</td><td>默认值，可在设置里改</td></tr>
+          <tr><td><span class="kbd">⌘1</span> – <span class="kbd">⌘9</span></td><td class="me">取第 N 条剪贴板</td><td>全局生效，面板收起时也能用</td></tr>
+          <tr><td><span class="kbd">⌘A</span></td><td class="me">全选文件</td><td>面板聚焦在文件区时</td></tr>
+          <tr><td><span class="kbd">Space</span></td><td class="me">Quick Look 预览</td><td>选中条目后</td></tr>
+          <tr><td><span class="kbd">Esc</span></td><td class="me">取消选择 / 收起面板</td><td>先取消选择，再按收起</td></tr>
+          <tr><td>单击热区 / 悬停</td><td class="me">展开面板</td><td>悬停展开时，鼠标移开 0.4 秒后自动收起</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 设计取舍 ══ -->
+<section class="sec" id="choices">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">06 · 设计取舍</div>
+      <h2>我们明确决定不做的事。</h2>
+      <p>每一条都是讨论过、有理由的。写在这儿，是让你在装之前就知道它的边界在哪。</p>
+    </div>
+
+    <ul class="list" style="gap:18px">
+      <li><span class="m">✕</span><span><b>不做抖动召唤手势。</b>那个交互解决的是「手上正拖着东西、临时变出一个货架」，
+        而 Perch 的用法是「先攒着，过一会儿再取」。砍掉它也就省去了全局鼠标钩子——少一个误触发源、少一项权限、少一次被安全软件误报。</span></li>
+      <li><span class="m">✕</span><span><b>不做密码识别。</b>见首页隐私说明。给你一个不可靠的安全感，比说清事实更糟。</span></li>
+      <li><span class="m">✕</span><span><b>不做云上传、公开链接、iCloud 同步。</b>东西只在这台机器上。这也是「不联网」这句话能成立的前提。</span></li>
+      <li><span class="m">✕</span><span><b>不做文件标签、分类、搜索。</b>那是文件管理器的活。栖架上的东西默认几小时后就没了，
+        给临时内容建索引是本末倒置。</span></li>
+      <li><span class="m">✕</span><span><b>不做自动化脚本引擎、自定义快捷动作。</b>会把一个「抬手就用」的工具变成一个需要先配置的工具。</span></li>
+      <li><span class="m">✕</span><span><b>不做 Windows 版。</b>技术栈是原生 Swift，移植等于重写。这是选原生手感时就付掉的代价。</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="wrap">
+    <h2>看完了，试一下？</h2>
+    <p>免费开源，不联网，装上两天就知道合不合手。</p>
+    <div class="hero-cta">
+      <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>下载 for macOS <span class="sz">DMG · 4.2 MB</span></a>
+      <a class="btn btn-g" href="/#privacy">再看一遍隐私说明</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
+    <span class="copy">© 2026 · MIT License</span>
+    <nav>
+      <a href="/features">产品介绍</a>
+      <a href="/privacy">隐私政策</a>
+      <a href="/support">支持</a>
+      <a href="/credits">致谢</a>
+      <a href="https://github.com/KapiYue/perch-app">GitHub</a>
+    </nav>
+    <div class="beian">
+      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026055717号-2</a>
+      <a class="police" href="https://beian.mps.gov.cn/#/query/webSearch?code=33010502013311" target="_blank" rel="noopener noreferrer"><img src="/assets/police-filing-icon.png" alt="" width="18" height="18">浙公网安备33010502013311号</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

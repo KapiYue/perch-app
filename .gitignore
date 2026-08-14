@@ -1,0 +1,44 @@
+# ── Xcode / 构建产物 ──
+*.xcodeproj
+*.xcworkspace
+DerivedData/
+build/
+.build/
+*.dmg
+*.zip
+
+# ── macOS ──
+.DS_Store
+
+# ── 本地工具配置（含会话状态，不属于项目） ──
+.claude/
+
+# ── 内部文档，不进公开仓库 ──
+# 提示词、执行计划、里程碑拆解属于开发过程材料，公开仓库只保留
+# README / LICENSE / CONTRIBUTING 和站点必需的政策文本。
+#
+# docs/internal/ 里放的是运维材料（部署手册含服务器公网 IP、站点目录、
+# rsync 与回滚步骤）。这类内容公开等于把攻击面写在明面上，
+# 与 cijing 的处理方式一致：Nginx 配置可以入库，部署手册不入库。
+docs/internal/
+perch-master-doc-and-prompts.md
+*-prompt.md
+*-prompts.md
+
+# 交互原型与素材包属于设计过程材料，本地保留即可
+perch-demo-v3.html
+files.zip
+
+# ── 本地预览产物 ──
+site/_preview-*.html
+
+# ── 密钥与签名材料，绝对不要提交 ──
+.env
+.env.*
+*.p12
+*.p8
+*.cer
+*.mobileprovision
+*.provisionprofile
+AuthKey_*.p8
+notarization-*.json

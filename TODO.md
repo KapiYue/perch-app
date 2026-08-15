@@ -15,7 +15,9 @@
 - [x] ~~确认备案口径~~ → **2026-08-14 15:54 腾讯云工程师答复：子域名不需单独备案；macOS 桌面软件不属于移动互联网应用程序，也不需要备案。** 对话截图已存档，备案侧零待办
 - [x] ~~`git init`~~ → 已完成，`.gitignore` 实测挡住了内部材料
 - [x] ~~COS 生命周期加规则~~ → **2026-08-14 已配置**：`abort-multipart-7d` / 整个存储桶 / 碎片删除 7 天 / 开启，且没有「当前版本文件删除」
-- [ ] 首次 commit 并推到 GitHub 仓库 `KapiYue/perch-app`
+- [x] ~~首次 commit 并推到 GitHub 仓库 `KapiYue/perch-app`~~ → **2026-08-15 完成**。
+      官网与文档在 `fd8e282`，App 主体（M0–M2 全部代码 + `project.yml` + 构建脚本）在 `0b68f5c`。
+      `.gitignore` 复核过：`build/`、`*.xcodeproj`、备案与部署手册、提示词材料均未入库
 - [x] ~~确认 Apple Developer 会员到期日~~ → **有效至 2027-07-16**，Team ID `HJ7HXSM7Y9`，个人账号
 - [ ] ⚡ **新建 `Developer ID Application` 证书**（M6 前完成即可，**不阻塞 M0–M5**）。
       已核实本机只有 `Apple Development` ×2 与 `Apple Distribution` ×1 —— 那两类都无法用于商店外分发和公证。步骤见签名手册第 1.4 节

@@ -62,7 +62,7 @@ A background timer checks the pasteboard's change count every 0.5s and only read
 | Action | Result |
 |---|---|
 | **Click a row** | Copies the content back to the system clipboard |
-| **`⌘1`–`⌘9`** | Grab the Nth entry without leaving the keyboard, works while the panel is closed |
+| **`⌘1`–`⌘9`** | Grab the Nth entry without leaving the keyboard (while the panel is open) |
 | **Drag it out** | Lands as a real file (text → `.txt`, screenshot → `.png`) |
 | **Double-click a row** | Toggles pinned state; pinned entries never expire |
 
@@ -99,8 +99,8 @@ Three ways to summon: click the hot zone, hover it (auto-closes 0.4s after the p
 
 | Shortcut | Action |
 |---|---|
-| `⌘⇧V` | Toggle the panel (configurable) |
-| `⌘1` – `⌘9` | Grab the Nth clipboard entry, works globally |
+| `⌃⌘V` | Toggle the panel, works globally (configurable) |
+| `⌘1` – `⌘9` | Grab the Nth clipboard entry (while the panel is open; released back to other apps as soon as it closes) |
 | `⌘A` | Select all files |
 | `Space` | Quick Look the selection |
 | `Esc` | Clear selection / close the panel |
@@ -184,7 +184,6 @@ Perch's ideas come from these projects, several of which are our daily drivers:
 
 - [NotchDrop](https://github.com/Lakr233/NotchDrop) — the notch shelf form factor, and the direct source of "the top of the screen is the entry point"
 - [Maccy](https://github.com/p0deje/Maccy) — the minimal approach to clipboard history, and the `changeCount` polling route
-- [KeyboardShortcuts](https://github.com/sindresorhus/KeyboardShortcuts) by Sindre Sorhus — global shortcuts
 - [Sparkle](https://sparkle-project.org/) — automatic updates
 - Dropover and Yoink — file shelf interaction details; a lot of our trade-offs only became clear after using them
 

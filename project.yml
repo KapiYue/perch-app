@@ -1,0 +1,72 @@
+# XcodeGen 工程定义。这个文件入库，生成出来的 *.xcodeproj 不入库。
+# 改完执行 `xcodegen generate` 重新生成工程。
+#
+# 装 XcodeGen：brew install xcodegen
+
+name: Perch
+
+options:
+  bundleIdPrefix: com.joy-coder
+  deploymentTarget:
+    macOS: "14.0"
+  createIntermediateGroups: true
+  # 默认语言简体中文。英文由 Localizable.xcstrings 提供。
+  developmentLanguage: zh-Hans
+
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    # 严格并发。AppKit 几乎全是 @MainActor，这个开关能在编译期
+    # 挡住「在后台线程碰 UI」这类 macOS 上最常见的崩溃。
+    SWIFT_STRICT_CONCURRENCY: complete
+    MARKETING_VERSION: "1.0.0"
+    CURRENT_PROJECT_VERSION: "1"
+    # Hardened Runtime 是 Apple 公证的前置条件，和 App Sandbox 是两回事。
+    # 沙盒必须关（见 Perch.entitlements），但 Hardened Runtime 要开。
+    ENABLE_HARDENED_RUNTIME: YES
+    ALWAYS_SEARCH_USER_PATHS: NO
+    CLANG_ENABLE_OBJC_ARC: YES
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+
+targets:
+  Perch:
+    type: application
+    platform: macOS
+
+    sources:
+      - path: Sources
+        excludes:
+          - "**/.DS_Store"
+
+    settings:
+      base:
+        PRODUCT_NAME: Perch
+        PRODUCT_BUNDLE_IDENTIFIER: com.joy-coder.perch
+        INFOPLIST_FILE: Sources/Resources/Info.plist
+        CODE_SIGN_ENTITLEMENTS: Sources/Resources/Perch.entitlements
+
+        # App Sandbox 必须关闭。开启后「拖出成真文件」和任意路径访问会残废，
+        # 代价是上不了 Mac App Store —— 这是已确认接受的取舍，不要「修正」它。
+        ENABLE_APP_SANDBOX: NO
+
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        COMBINE_HIDPI_IMAGES: YES
+
+        # 默认 ad-hoc 签名，保证没有开发者账号的人也能 clone 下来直接构建。
+        # M6 的 build_release.sh 会在命令行覆盖成 Developer ID。
+        CODE_SIGN_STYLE: Manual
+        CODE_SIGN_IDENTITY: "-"
+        DEVELOPMENT_TEAM: ""
+
+        # 让编译器从 String(localized:) 抽取字符串，便于核对漏翻。
+        SWIFT_EMIT_LOC_STRINGS: YES
+
+      configs:
+        Debug:
+          SWIFT_ACTIVE_COMPILATION_CONDITIONS: DEBUG
+          ONLY_ACTIVE_ARCH: YES
+        Release:
+          SWIFT_COMPILATION_MODE: wholemodule
+          # Universal：Apple Silicon + Intel 都能跑
+          ARCHS: "$(ARCHS_STANDARD)"

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- 沙盒必须关闭。
+	     开启后：① 从面板拖出的文件无法写到用户选定的任意位置；
+	             ② 无法访问 ~/Library/Application Support 之外的原始文件路径。
+	     代价是上不了 Mac App Store，只能自行分发 —— 已确认接受，不要改成 true。 -->
+	<key>com.apple.security.app-sandbox</key>
+	<false/>
+</dict>
+</plist>

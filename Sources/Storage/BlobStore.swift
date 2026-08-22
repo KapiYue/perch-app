@@ -1,8 +1,6 @@
 import Foundation
 
 /// `blobs/` 目录管理：内容本体与缩略图的落盘位置。
-///
-/// M1-b 接入拖入文件的拷贝，M2 接入剪贴板图片的写入，M3 接入清理。
 enum BlobStore {
 
     /// `~/Library/Application Support/Perch/blobs/`
@@ -41,5 +39,51 @@ enum BlobStore {
         try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
         try data.write(to: directory.appendingPathComponent(filename), options: .atomic)
         return "\(id.uuidString)/\(filename)"
+    }
+
+    static func exists(atRelativePath path: String) -> Bool {
+        FileManager.default.fileExists(atPath: absoluteURL(forRelativePath: path).path)
+    }
+
+    // MARK: - 对账
+
+    /// 刚落地的目录不参与孤儿判定的宽限期。
+    ///
+    /// 🚨 这个宽限期是必须的：`copyIntoBlobs` / `ingestImage` 都是**先建目录再写文件**，
+    /// 建完到条目进索引之间有一小段窗口。启动扫描恰好撞进这个窗口，
+    /// 就会把用户正拖进来的东西当成孤儿删掉。
+    private static let orphanGracePeriod: TimeInterval = 5 * 60
+
+    /// 扫掉「索引里没人指向」的目录，返回删掉的个数。
+    ///
+    /// 为什么需要它：写盘失败会留下一个空壳目录，而索引里从来没有它 ——
+    /// 按条目清理的那条路径**永远扫不到**，只能靠这里对一次账。
+    /// （2026-08-22 实测在 `blobs/` 里发现过这种空目录。）
+    ///
+    /// 只在启动时跑一次。放在后台线程，别在主线程枚举目录。
+    @discardableResult
+    nonisolated static func removeOrphanDirectories(keeping liveIDs: Set<UUID>) -> Int {
+        let manager = FileManager.default
+        guard let entries = try? manager.contentsOfDirectory(
+            at: rootDirectory,
+            includingPropertiesForKeys: [.isDirectoryKey, .contentModificationDateKey],
+            options: [.skipsHiddenFiles]
+        ) else { return 0 }
+
+        let cutoff = Date().addingTimeInterval(-orphanGracePeriod)
+        var removed = 0
+
+        for entry in entries {
+            // 认不出 UUID 的东西一律不碰 —— 那不是我们建的，删了就是越权。
+            guard let id = UUID(uuidString: entry.lastPathComponent) else { continue }
+            guard !liveIDs.contains(id) else { continue }
+
+            let values = try? entry.resourceValues(forKeys: [.contentModificationDateKey])
+            guard let modified = values?.contentModificationDate, modified < cutoff else { continue }
+
+            if (try? manager.removeItem(at: entry)) != nil { removed += 1 }
+        }
+
+        return removed
     }
 }

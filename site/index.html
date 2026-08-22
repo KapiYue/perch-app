@@ -3,363 +3,659 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Perch · 栖架 — macOS 顶部中转站，剪贴板与文件合体</title>
-<meta name="description" content="拖进来、复制过的文件、图片、文本、链接先「栖」在屏幕顶部，随时再取到任何地方去。仅 macOS，开源免费。">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23000'/><rect x='18' y='0' width='28' height='14' rx='7' fill='%230a84ff'/></svg>">
-<link rel="stylesheet" href="/assets/site.css">
+<title>Perch · 栖架 — macOS 顶部中转架与剪贴板历史</title>
+<meta name="description" content="拖进来、复制过的文件、图片、文本、链接先「栖」在屏幕顶部，随时再取到任何地方去。仅 macOS，开源免费，100% 本地离线。">
+<meta property="og:title" content="Perch · 栖架">
+<meta property="og:description" content="拖进来、复制过的文件、图片、文本、链接先「栖」在屏幕顶部，随时再取到任何地方去。">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%23000'/><rect x='18' y='0' width='28' height='14' rx='7' fill='%2300e59a'/></svg>">
+<link rel="stylesheet" href="/assets/home.css">
 </head>
 <body>
 
-<header class="nav">
-  <div class="wrap">
-    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
-    <nav>
-      <a href="#core">核心</a>
-      <a href="#take">取出</a>
-      <a href="#compare">对比</a>
-      <a href="#privacy">隐私</a>
-      <a href="/features">产品介绍</a>
-    </nav>
-    <a class="btn-sm" href="#download">下载</a>
-  </div>
-</header>
-
-<!-- ══ Hero ══ -->
+<!-- ══ Hero ══════════════════════════════════════════════════════════ -->
 <section class="hero">
-  <div class="wrap">
-    <span class="eyebrow"><b>v1.0</b> · 开源 MIT · 仅 macOS 14+</span>
-    <h1>复制过的一切，<br>先栖在屏幕顶部。</h1>
-    <p class="lead" style="margin-top:22px">
-      拖进来的文件、你在任何地方复制过的文本、链接、截图，都自动停在屏幕顶部那条黑边上。
-      需要时抬手取回——粘贴回剪贴板，或者直接拖出来变成真文件。
-    </p>
+  <span class="eyebrow">
+    <span class="dot"></span>
+    <!-- ⚠️ 发布前状态（M6 还原）：换回 <span class="v">v1.0</span> -->
+    <span class="v">即将发布</span>
+    <span class="bar"></span>macOS 14+ 专属<span class="bar"></span>100% 离线隐私 · GPL-3.0 开源
+  </span>
 
-    <div class="hero-cta">
-      <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>下载 for macOS <span class="sz">DMG · 4.2 MB</span></a>
-      <a class="btn btn-g" href="/features">看看它怎么用 →</a>
-    </div>
-    <div class="hero-meta">
-      <span>macOS 14 Sonoma 及以上</span><i class="dot"></i>
-      <span>Apple Silicon &amp; Intel</span><i class="dot"></i>
-      <span>已签名公证</span><i class="dot"></i>
-      <span>不联网 · 数据只在本机</span>
-    </div>
+  <h1>拖进来、复制过的文件<br><em>先「栖」在屏幕顶部，</em><br>随时再取到任何地方去。</h1>
 
-    <!-- 桌面模拟 -->
-    <div class="stage">
-      <div class="menubar">
-        <div class="l"><b>Finder</b><span>文件</span><span>编辑</span><span>显示</span><span>前往</span></div>
-        <div class="r"><span>􀛨</span><span>􀙇</span><span>100%</span><span>周四 14:32</span></div>
+  <p class="hero-sub">
+    专为 macOS 设计的极简顶部中转架与剪贴板管理器。<br>
+    支持真文件拖拽落地、<kbd>⌘1</kbd>–<kbd>⌘9</kbd> 极速盲操取回、机密标记自动跳过，专注纯粹的高效流转。
+  </p>
+
+  <div class="cta-row">
+    <!-- ⚠️ 发布前状态（M6 还原）：DMG 打包 + 公证完成后，把这个按钮换回
+         <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download> …下载通用版 DMG…（真实体积）</a>
+         三处下载入口口径必须一起改：本页 Hero、本页收尾、/features 页。 -->
+    <a class="btn btn-p" href="https://github.com/KapiYue/perch-app" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.3 5.9.9-4.3 4.1 1 5.8-5.2-2.7-5.2 2.7 1-5.8L3.5 9.2l5.9-.9z"/></svg>
+      去 GitHub 关注发布
+    </a>
+    <a class="btn btn-g" href="#stage">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M9 21h6"/></svg>
+      在线试一试
+    </a>
+  </div>
+
+  <!-- ⚠️ 发布前状态（M6 还原）：整段删掉 -->
+  <p class="soon">1.0 还没发布。签名与公证走完就在这里放出 DMG —— 在 GitHub 上点个 star 或 Watch，发布时你会第一时间知道。</p>
+
+  <!-- ⚠️ 发布前状态（M6 还原）：Homebrew tap 建好并实测通过之前，
+       这个命令敲下去一定失败，所以先禁用。还原时去掉 disabled 与 .brew-off。 -->
+  <button class="brew brew-off" id="brew" type="button" disabled data-cmd="brew install --cask perch">
+    <span class="pr">&gt;_</span>
+    <span>brew install --cask perch</span>
+    <!-- ⚠️ 发布前状态（M6 还原）：删掉这个 span -->
+    <span class="soon-tag">发布后可用</span>
+    <span class="cp" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>
+    </span>
+    <span class="sr">复制安装命令</span>
+  </button>
+</section>
+
+<!-- ══ 交互模拟窗口 ══════════════════════════════════════════════════
+     它就是「架」本身：下面桌面场景里的文件能拖上来，行能点能拖走。 -->
+<div class="sim-wrap">
+  <div class="sim" id="sim">
+    <header class="sim-bar">
+      <span class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+      <span class="live"></span>
+      <span class="sim-title">Perch 顶部栖架实时交互模拟</span>
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" aria-selected="true" data-tab="clips">剪贴板历史 (<span id="n-clips">4</span>)</button>
+        <button class="tab" role="tab" aria-selected="false" data-tab="files">文件临时架 (<span id="n-files">4</span>)</button>
       </div>
+    </header>
 
-      <div class="perch">
-        <div class="hot">
-          <span class="lbl">栖架</span>
-          <span class="cnt">18</span>
+    <div class="sim-hint">
+      <span class="chip-hint">💡 提示：点击任意行直接取回复制</span>
+      <span>· 按下 <span class="mono">⌘1–⌘9</span> 亦可盲操直接提取</span>
+      <span class="sp"></span>
+      <span class="hint-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l5 5-2 1v4l2 3H7l2-3V9L7 8z"/><path d="M12 16v5"/></svg>
+        固定项永不过期
+      </span>
+      <span class="hint-meta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>
+        12h 自动轮换
+      </span>
+    </div>
+
+    <div class="rows" id="rows"></div>
+
+    <footer class="sim-foot">
+      <span class="live"></span>
+      监听状态：已激活（0.5s 变更检测）
+      <span class="sp"></span>
+      <a href="#stage">向下试试拖拽流转 ↓</a>
+    </footer>
+  </div>
+</div>
+
+<!-- ══ 桌面场景 ══════════════════════════════════════════════════════ -->
+<section class="stage" id="stage">
+  <div class="stage-inner">
+
+    <div>
+      <div class="pane">
+        <div class="pane-hd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V5a1 1 0 011-1h3l2 2h5a1 1 0 011 1v2"/><rect x="3" y="8" width="18" height="12" rx="2"/></svg>
+          访达桌面文件
+          <span class="tip">拖到上面的架上</span>
         </div>
-        <div class="panel">
-          <div class="p-head">
-            <span class="t">栖架</span>
-            <span class="s">12 条剪贴板 · 6 个文件 · 213 MB</span>
-            <span class="ibtn">⏸</span><span class="ibtn">⚙</span>
-          </div>
+        <div class="finder" id="finder"></div>
+      </div>
 
-          <div class="p-sec">
-            <div class="p-sec-hd">
-              <h4>剪贴板</h4><span class="n">12</span><span class="sp"></span><span class="a">清空</span>
-            </div>
-            <div class="crow ok">
-              <span class="idx">⌘1</span>
-              <span class="ic text">✎</span>
-              <span class="txt">
-                <span class="p">下周三前把埋点方案对齐，数据口径按新版文档走</span>
-                <span class="m">3 分钟前 · 11 小时后清理</span>
-              </span>
-              <span class="chip">✓ 已复制</span>
-            </div>
-            <div class="crow hl">
-              <span class="idx">⌘2</span>
-              <span class="ic link">🔗</span>
-              <span class="txt">
-                <span class="p lk">https://github.com/KapiYue/perch-app</span>
-                <span class="m">14 分钟前 · 11 小时后清理</span>
-              </span>
-            </div>
-            <div class="crow">
-              <span class="idx">⌘3</span>
-              <span class="ic image">🖼</span>
-              <span class="txt">
-                <span class="p">截图 2026-08-13 143022.png</span>
-                <span class="m">1 小时前 · 10 小时后清理</span>
-              </span>
-            </div>
-          </div>
+      <div class="pane simcopy">
+        <div class="pane-hd">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#00e59a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7l4 4-4 4"/><path d="M12 15h7"/></svg>
+          快速模拟复制行为
+        </div>
+        <p>点击下方按钮，模拟在其他应用中执行 ⌘C 复制，测试 Perch 的实时上架与快捷键取回：</p>
+        <button class="copybtn" data-kind="link" data-content="https://news.ycombinator.com">
+          <span>复制 Hacker News 网址</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>
+        </button>
+        <button class="copybtn" data-kind="code" data-content="curl -fsSL https://get.docker.com | sh">
+          <span>复制 Docker 安装指令</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>
+        </button>
+        <button class="copybtn" data-kind="text" data-content="macOS 顶部刘海文件临时中转架设计标准 2026">
+          <span>复制备忘录会议要点</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a1 1 0 011-1h9"/></svg>
+        </button>
+      </div>
+    </div>
 
-          <div class="p-sec">
-            <div class="p-sec-hd">
-              <h4>文件</h4><span class="n">6</span><span class="sp"></span><span class="a">添加文件…</span>
-            </div>
-            <div class="fgrid">
-              <div class="fcell sel"><span class="fi">🎨</span><span class="fn">封面.sketch</span></div>
-              <div class="fcell sel"><span class="fi">📘</span><span class="fn">规范.pdf</span></div>
-              <div class="fcell sel"><span class="fi">🗜</span><span class="fn">素材.zip</span></div>
-              <div class="fcell"><span class="fi">🎬</span><span class="fn">demo.mp4</span></div>
-              <div class="fcell"><span class="fi">📗</span><span class="fn">数据.xlsx</span></div>
-              <div class="fcell"><span class="fi">📕</span><span class="fn">合同.pdf</span></div>
-            </div>
-          </div>
+    <div class="editor" id="editor">
+      <div class="ed-bar">
+        <span class="lights"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></span>
+        <span class="ed-title">前台工作区焦点应用（测试输入与光标保留）</span>
+      </div>
+      <div class="ed-body">
+        <div class="ed-tip">
+          💡 面板展开时前台 App 输入光标不会消失；把上面架上的任意一行<b>拖进这个编辑器</b>试试
+          <span class="r">支持拖入</span>
+        </div>
+        <textarea id="ed" spellcheck="false"># 欢迎体验 Perch · 栖架 交互测试台
 
-          <div class="p-foot">
-            <span class="live"></span><span>剪贴板监听中</span>
-            <span class="sp"></span>
-            <span>⌘⇧V 唤出 · 单击复制 · ⌘1–9 快取</span>
-          </div>
+- 把左边的桌面文件拖到上方的「栖架」里暂存
+- 点击架上任意一行，内容直接回到系统剪贴板
+- 把架上的行拖进这个编辑器，或者点下面的 ⌘N 按钮取回</textarea>
+        <div class="numrow">
+          <span class="lb">模拟取第 N 条：</span>
+          <span id="nums"></span>
         </div>
       </div>
     </div>
+
   </div>
 </section>
 
-<!-- ══ 核心 ══ -->
-<section class="sec" id="core">
+<!-- ══ 四条取出路径 ══════════════════════════════════════════════════ -->
+<section class="sec">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">为什么是它</div>
-      <h2>剪贴板和文件，本来就该在同一个地方。</h2>
-      <p>市面上的工具总要你二选一：管文件的不管剪贴板，管剪贴板的碰不了文件。
-         Perch 把两条线合成一个入口，并且在后台自动收集——不需要你先想起来它。</p>
+      <div class="kicker">Four ways to retrieve</div>
+      <h2>四条取出路径，彻底告别频繁切换</h2>
+      <p>无论是键盘单手盲操、鼠标随心点按，还是直接把内容拖到微信、邮件或 IDE，Perch 都为你准备了最合手的取回方式。</p>
     </div>
 
-    <div class="grid g3">
-      <div class="card">
-        <div class="ico i-blue">📋</div>
-        <h3>后台自动监听剪贴板</h3>
-        <p>复制即上架。文本、链接、截图自动分类，图片直接显示缩略图。你不用先打开任何窗口，复制完继续干活就行。</p>
-        <span class="tag">这是 Perch 的立身之本</span>
-      </div>
-      <div class="card">
-        <div class="ico i-purple">📥</div>
-        <h3>文件临时中转架</h3>
-        <p>从访达拖进来，切 Space、切 App，再拖到目标位置。多选打包 ZIP，一次拖一堆。拖入的文件会被拷贝保存，原文件删了也不受影响。</p>
-        <span class="tag">支持拖进浏览器上传框</span>
-      </div>
-      <div class="card">
-        <div class="ico i-green">⌃</div>
-        <h3>屏幕顶部固定入口</h3>
-        <p>有刘海的机器贴着刘海渲染，没刘海的（外接屏、iMac、Mac mini）画一条同尺寸的黑条。单击、悬停、<span class="kbd">⌘⇧V</span> 三种唤出方式。</p>
-        <span class="tag">多屏跟随鼠标所在屏幕</span>
-      </div>
-    </div>
-  </div>
-</section>
+    <div class="grid2">
+      <article class="card t-green">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3l6 16 2-6 6-2z"/></svg></div>
+        <h3>1. 单击整行，瞬间拷回</h3>
+        <p>点击列表任意行，内容直接进入系统主剪贴板。行内微光状态即时反馈，前台输入光标绝不丢失，随手即可在当前窗口直接 ⌘V 粘贴。</p>
+        <div class="card-foot"><span class="act">动作：Mouse Click</span><span class="tags">不抢焦点 · 极速流转</span></div>
+      </article>
 
-<!-- ══ 取出 ══ -->
-<section class="sec" id="take">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">取出</div>
-      <h2>四条路径，怎么顺手怎么来。</h2>
-      <p>面板展开后，同一条内容有四种取走方式。它们不是备选方案，是四种不同的使用姿势。</p>
-    </div>
+      <article class="card t-sky">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3L5 14h6l-1 7 8-11h-6z"/></svg></div>
+        <h3>2. ⌘1 – ⌘9 键盘直达</h3>
+        <p>面板展开时，前 9 条常驻醒目的按键标识。双手无需离开键盘，直接按下 ⌘1 至 ⌘9 即可取出对应记录；面板收起后这九个键立刻还给其它 App，不抢浏览器的切标签页。</p>
+        <div class="card-foot"><span class="act">动作：Command + [1–9]</span><span class="tags">手不离键 · 盲操命中</span></div>
+      </article>
 
-    <div class="grid g2" style="gap:32px 44px">
-      <div class="path">
-        <span class="k">单击</span>
-        <div><h3>复制回剪贴板</h3><p>点整行，内容立刻回到系统剪贴板，切过去 <span class="kbd">⌘V</span> 就有。整行短暂变绿，行内弹出「✓ 已复制」——不弹全局提示，因为此刻你的视线就在这一行上。</p></div>
-      </div>
-      <div class="path">
-        <span class="k">⌘1–9</span>
-        <div><h3>手不离键盘</h3><p>前九条带序号，全局快捷键直接取第 N 条。面板收起时也生效，连唤出这一步都省了。</p></div>
-      </div>
-      <div class="path">
-        <span class="k">拖出</span>
-        <div><h3>落地成真文件</h3><p>拖住往外拖，松手才生成文件。剪贴板里的一段文字能拖成 .txt，一张截图能拖成 .png，直接丢进聊天窗口或上传框。</p></div>
-      </div>
-      <div class="path">
-        <span class="k">双击</span>
-        <div><h3>固定，永不过期</h3><p>双击切换固定状态。固定的条目不参与自动清理，也不参与数量淘汰。常用的模板、常贴的链接放这儿。</p></div>
-      </div>
+      <article class="card t-teal">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4l-8 8"/><path d="M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg></div>
+        <h3>3. 往外拖拽，落地成真文件</h3>
+        <p>无论是中转架上的暂存文件，还是剪贴板里的文本、截图、代码，直接往外部应用一拖，Perch 会自动生成真实的 .txt、.png 实体文件落地。</p>
+        <div class="card-foot"><span class="act">动作：Drag &amp; Drop Export</span><span class="tags">NSFilePromiseProvider</span></div>
+      </article>
+
+      <article class="card t-amber">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l5 5-2 1v4l2 3H7l2-3V9L7 8z"/><path d="M12 16v5"/></svg></div>
+        <h3>4. 双击锁定，永不过期</h3>
+        <p>常用代码片段、常贴的链接、常用地址双击即可置顶固定。固定项不参与自动清理，也不参与数量淘汰，免受默认 12 小时轮换的影响。</p>
+        <div class="card-foot"><span class="act">动作：Double Click Pin</span><span class="tags">置顶保护 · 永久留存</span></div>
+      </article>
     </div>
   </div>
 </section>
 
-<!-- ══ 对比 ══ -->
-<section class="sec" id="compare">
+<!-- ══ 上下分区 ══════════════════════════════════════════════════════ -->
+<section class="sec">
   <div class="wrap">
     <div class="sec-head">
-      <div class="kicker">和同类比</div>
-      <h2>各有各的好，差别在合不合体。</h2>
+      <div class="kicker k-sky">Two-tier architecture</div>
+      <h2>上层临时架 + 下层剪贴板</h2>
+      <p>巧妙整合两种最核心的文件中转场景，既不挤占屏幕空间，又能让所有暂存资产一览无余。</p>
+    </div>
+
+    <div class="tier">
+      <article class="card t-sky">
+        <div class="tier-hd">
+          <span class="tier-badge">上</span>
+          <h3>文件临时中转架 (Shelf)<span class="sub">跨应用拖放的最佳跳板</span></h3>
+        </div>
+        <ul>
+          <li><span><b>独立本地副本</b>：拖入的文件会自动拷贝一份。即使原文件被移动、重命名或删掉，架上副本仍完好无损。</span></li>
+          <li><span><b>⌘A 批量操作与 ZIP 打包</b>：支持多选文件批量拖出，或一键打包为 ZIP 压缩包分发。</span></li>
+          <li><span><b>Space 空格键 Quick Look</b>：原生系统级预览，无需打开沉重 App 即可秒级查看图片、文档与代码。</span></li>
+        </ul>
+        <div class="note">~/Library/Application Support/Perch/blobs/<b>本地存储，随用随清，零残留</b></div>
+      </article>
+
+      <article class="card t-green">
+        <div class="tier-hd">
+          <span class="tier-badge">下</span>
+          <h3>剪贴板历史记录 (History)<span class="sub">不打扰、不遗忘的记忆流</span></h3>
+        </div>
+        <ul>
+          <li><span><b>智能轻量分类</b>：自动高亮链接（绿色下划线）、代码片段（等宽字体并标出语言）以及截图缩略图。</span></li>
+          <li><span><b>时间倒计时轮替</b>：默认 12 小时自动释放空间（可自选 1h / 12h / 24h / 7d / 永不），保持轻盈无负担。</span></li>
+          <li><span><b>0.5s 变更检测轮询</b>：轻量后台监听，changeCount 变了才读内容，平时几乎不耗 CPU。</span></li>
+        </ul>
+        <div class="note">索引 index.json · 原子写入<b>图片与文件只存路径，绝不 base64 进索引</b></div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 隐私 ══════════════════════════════════════════════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker k-teal">Privacy &amp; security</div>
+      <h2>隐私是第一准则，不是营销口号</h2>
+      <p>剪贴板是现代操作系统中最敏感的数据入口，里面可能包含密码、私钥、合同草案与私人对话。Perch 承诺将数据主权 100% 交还给您。</p>
+    </div>
+
+    <div class="grid4">
+      <article class="pcard">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/></svg></div>
+        <h3>100% 纯本地运行</h3>
+        <p>零网络请求、零云端上传、零遥测打点。断网也能顺畅工作。</p>
+      </article>
+      <article class="pcard">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg></div>
+        <h3>机密标记自动跳过</h3>
+        <p>识别 1Password / KeePass 等打的 ConcealedType 标记，命中即丢弃不入库。<b>该开关默认关闭，由你决定是否开启。</b></p>
+      </article>
+      <article class="pcard">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="3.5" height="14" rx="1"/><rect x="13.5" y="5" width="3.5" height="14" rx="1"/></svg></div>
+        <h3>常驻一键暂停监听</h3>
+        <p>遇到处理隐私内容时，点击 ⏸ 即可停止记录，状态跨重启持久生效。</p>
+      </article>
+      <article class="pcard">
+        <div class="tile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14"/><path d="M9 7V5a1 1 0 011-1h4a1 1 0 011 1v2"/><path d="M6 7l1 13h10l1-13"/></svg></div>
+        <h3>一键彻底安全抹除</h3>
+        <p>偏好设置提供一键清空按钮，销毁本地历史索引与全部暂存文件。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 对比 ══════════════════════════════════════════════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker k-amber">Competitive matrix</div>
+      <h2>为什么选择 Perch · 栖架？</h2>
       <p>下面这些都是好工具，我们自己也在用。列出来是为了让你判断需不需要 Perch，而不是说别人不行。</p>
     </div>
 
     <div class="tbl-wrap">
       <table>
         <thead>
-          <tr>
-            <th style="width:22%">能力</th>
-            <th class="hi">Perch</th>
-            <th>NotchDrop</th>
-            <th>Maccy</th>
-            <th>Dropover / Yoink</th>
-          </tr>
+          <tr><th style="width:22%">功能特性</th><th class="me">Perch · 栖架</th><th>NotchDrop</th><th>Maccy</th><th>Paste</th><th>Yoink / Dropover</th></tr>
         </thead>
         <tbody>
-          <tr><td class="me">剪贴板历史</td><td class="hi yes">✓ 自动监听</td><td class="no">✕</td><td class="yes">✓</td><td class="no">✕</td></tr>
-          <tr><td class="me">文件临时架</td><td class="hi yes">✓</td><td class="yes">✓</td><td class="no">✕</td><td class="yes">✓</td></tr>
-          <tr><td class="me">两者同一入口</td><td class="hi yes">✓</td><td class="no">✕</td><td class="no">✕</td><td class="no">✕</td></tr>
-          <tr><td class="me">内容拖出成文件</td><td class="hi yes">✓ 文本/图片皆可</td><td class="yes">✓ 仅文件</td><td class="no">✕</td><td class="yes">✓ 仅文件</td></tr>
-          <tr><td class="me">按时长自动清理</td><td class="hi yes">✓ 可配置</td><td class="mid">部分</td><td class="mid">按条数</td><td class="mid">部分</td></tr>
-          <tr><td class="me">价格</td><td class="hi yes">免费 · MIT</td><td class="yes">免费 · MIT</td><td class="yes">免费 · MIT</td><td class="mid">付费</td></tr>
+          <tr><td>顶部刘海 / 胶囊集成</td><td class="me">✅ 刘海与无刘海自适应</td><td class="mid">仅物理刘海</td><td class="no">✕ 仅菜单栏</td><td class="no">✕ 底部抽屉</td><td class="no">✕ 侧边浮窗</td></tr>
+          <tr><td>文件架与剪贴板二合一</td><td class="me">✅ 上层文件 + 下层记录</td><td class="no">✕ 仅文件</td><td class="no">✕ 仅剪贴板</td><td class="mid">分组支持</td><td class="no">✕ 仅文件暂存</td></tr>
+          <tr><td>往外拖拽落地成真文件</td><td class="me">✅ 文本 / 图片 / 代码</td><td>✅ 仅已有文件</td><td class="no">✕ 仅复制到剪贴板</td><td>✅</td><td>✅ 仅已有文件</td></tr>
+          <tr><td>⌘1 – ⌘9 键盘直达</td><td class="me">✅ 极速盲操取回</td><td class="no">✕</td><td>✅</td><td class="no">✕ 无单键直达</td><td class="no">✕</td></tr>
+          <tr><td>按时长自动清理</td><td class="me">✅ 可配置 1h–7d</td><td class="mid">部分</td><td class="mid">按条数</td><td class="mid">按条数</td><td class="mid">部分</td></tr>
+          <tr><td>不联网 / 无账号</td><td class="me">✅ 100% 离线</td><td>✅ 本地存储</td><td>✅ 本地存储</td><td class="mid">⚠️ 依赖 iCloud 同步</td><td>✅ 本地存储</td></tr>
+          <tr><td>收费模式</td><td class="me">🎉 免费开源 GPL-3.0</td><td>免费</td><td>免费开源</td><td class="mid">订阅制</td><td class="mid">付费买断</td></tr>
         </tbody>
       </table>
     </div>
-    <p style="font-size:12.5px;color:var(--faint);margin-top:14px">
-      对比信息基于 2026 年 8 月各产品公开版本，如有出入欢迎在 GitHub 提 Issue 更正。
-    </p>
+    <p style="font-size:12.5px;color:var(--faint);margin-top:14px">对比信息基于 2026 年 8 月各产品公开版本，如有出入欢迎在 GitHub 提 Issue 更正。</p>
   </div>
 </section>
 
-<!-- ══ 隐私 ══ -->
-<section class="sec" id="privacy">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">隐私</div>
-      <h2>该说清楚的话，放在最显眼的地方。</h2>
-    </div>
-
-    <div class="notice" style="margin-bottom:26px">
-      <h3>⚠️ 请先读这一段</h3>
-      <p><b>Perch 会记录你复制的一切内容，并保存到本机磁盘。</b>包括你从密码管理器里复制的密码。
-         我们<b>不做</b>任何「猜这是不是密码」的启发式识别——猜错会漏，猜对了也只是概率，
-         与其给你一个不可靠的安全感，不如把事实讲明白。</p>
-      <p>对应地，面板头部有<b>常驻可见的暂停按钮</b>，一键停止监听；设置里有<b>抹掉全部数据</b>。
-         另外可以选择开启「跳过被标记为机密的内容」——那是密码管理器主动打的标记，尊重来源声明，而不是我们去猜。</p>
-    </div>
-
-    <div class="split">
-      <div class="pane good">
-        <h3>✓ 我们做了什么</h3>
-        <ul class="list">
-          <li><span class="m">·</span><span>数据全部存在 <b>~/Library/Application Support/Perch/</b>，一个字节都不上传</span></li>
-          <li><span class="m">·</span><span>没有账号、没有云同步、没有遥测、没有崩溃上报</span></li>
-          <li><span class="m">·</span><span>App 全程<b>不发起任何网络请求</b>（自动更新检查除外，可关闭）</span></li>
-          <li><span class="m">·</span><span>源码 MIT 开源，可自行审计、自行构建</span></li>
-        </ul>
-      </div>
-      <div class="pane bad">
-        <h3>✕ 我们没申请什么</h3>
-        <ul class="list">
-          <li><span class="m">·</span><span>不申请<b>辅助功能</b>（Accessibility）权限</span></li>
-          <li><span class="m">·</span><span>不申请<b>屏幕录制</b>权限</span></li>
-          <li><span class="m">·</span><span>不安装<b>全局鼠标钩子</b>，所以也没有「抖一抖召唤」</span></li>
-          <li><span class="m">·</span><span>不读取你的通讯录、日历、照片库</span></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══ 下载 ══ -->
-<section class="sec" id="download">
-  <div class="wrap">
-    <div class="sec-head">
-      <div class="kicker">下载</div>
-      <h2>三种装法，随你。</h2>
-    </div>
-
-    <div class="grid g3">
-      <div class="dl">
-        <h3>直接下载</h3>
-        <p>已用 Developer ID 签名并经 Apple 公证，双击不会报「已损坏」。国内节点，直连不用梯子。</p>
-        <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>Perch-1.0.0.dmg <span class="sz">4.2 MB</span></a>
-        <p style="margin:14px 0 0;font-size:12.5px">
-          下载不动？走
-          <a href="https://github.com/KapiYue/perch-app/releases/latest"
-             style="color:var(--accent)">GitHub Releases 备用链接 →</a>
-        </p>
-      </div>
-      <div class="dl">
-        <h3>Homebrew</h3>
-        <p>习惯命令行的话两行搞定，后续 <code style="display:inline;padding:1px 5px;background:rgba(0,0,0,.4)">brew upgrade</code> 跟着更新。</p>
-        <span class="code">brew tap kapiyue/tap<br>brew install --cask perch</span>
-      </div>
-      <div class="dl">
-        <h3>自行构建</h3>
-        <p>没有开发者账号也能构建可用版本，脚本用 ad-hoc 签名。</p>
-        <span class="code">./script/build_unsigned.sh</span>
-      </div>
-    </div>
-
-    <div class="req">
-      <span><b>系统要求</b> macOS 14 Sonoma 或更高</span>
-      <span><b>架构</b> Universal（Apple Silicon / Intel）</span>
-      <span><b>协议</b> MIT</span>
-      <span><b>更新</b> Sparkle 内置自动更新</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══ FAQ ══ -->
+<!-- ══ 设计取舍 ══════════════════════════════════════════════════════ -->
 <section class="sec">
   <div class="wrap">
-    <div class="sec-head"><div class="kicker">常见问题</div><h2>你可能想问的。</h2></div>
+    <div class="sec-head">
+      <div class="kicker">Design philosophy</div>
+      <h2>克制与专注：我们坚持不做的事</h2>
+      <p>好的工具不是功能的盲目堆砌，而是把最核心的痛点打磨至极致。</p>
+    </div>
+
+    <div class="grid3">
+      <article class="card nope">
+        <span class="x">✕</span>
+        <h3>不做云端同步</h3>
+        <div class="sub">保护你的数据边界</div>
+        <p>许多剪贴板软件以「多端同步」为卖点，但这意味着你每次复制的代码、合同和对话都会上传至第三方服务器。Perch 坚持 100% 离线。</p>
+      </article>
+      <article class="card nope">
+        <span class="x">✕</span>
+        <h3>不做密码内容识别</h3>
+        <div class="sub">不给你不可靠的安全感</div>
+        <p>基于猜测的「智能过滤」一定会漏，而漏掉的那次恰恰最危险。我们只尊重来源 App 的显式标记，其余照实记录，并把暂停按钮常驻在你看得见的地方。</p>
+      </article>
+      <article class="card nope">
+        <span class="x">✕</span>
+        <h3>不做全屏打扰</h3>
+        <div class="sub">保持思维连贯</div>
+        <p>Perch 收纳在屏幕顶部，展开时仅占用顶部一小块悬浮区域，不遮挡主窗口内容，用完自动收回，让你的专注流不被割裂。</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FAQ ══════════════════════════════════════════════════════════ -->
+<section class="sec">
+  <div class="wrap">
+    <div class="sec-head"><div class="kicker">FAQ</div><h2>常见问题解答</h2></div>
     <div class="faq">
       <details open>
-        <summary>我的 Mac 没有刘海，能用吗？</summary>
-        <p>能，而且体验完全一致。Perch 的入口定义是「屏幕中上方的一块热区」，不是「物理刘海」。没有刘海的机器会在屏幕顶部正中渲染一条同尺寸的黑色圆角条，面板本身的外观两种情况下完全相同。外接显示器、iMac、Mac mini 都成立。</p>
+        <summary>没有刘海的 Mac（如 Mac mini、iMac 或外接 4K 显示器）可以使用吗？</summary>
+        <p>完全可以，而且体验一致。Perch 的入口定义是「屏幕中上方的一块热区」，不是「物理刘海」。在无刘海屏幕或外接显示器上，Perch 会在顶部正中渲染一条同尺寸的黑色圆角条。鼠标移到顶部热区，或按下全局快捷键 ⌃⌘V 即可唤出。多屏时面板出现在鼠标当前所在的那块屏幕上。</p>
       </details>
       <details>
-        <summary>关掉 App 之后内容还在吗？</summary>
-        <p>在。剪贴板历史和文件都会跨重启保留，只有到期或被你手动移除才消失。默认保存 12 小时，可以在设置里改成 1 小时 / 12 小时 / 24 小时 / 7 天 / 永不。</p>
+        <summary>原文件被移动、重命名或丢进废纸篓后，架上的文件还能用吗？</summary>
+        <p>依然完好可用。文件被拖入 Perch 时会在 ~/Library/Application Support/Perch/blobs/ 创建一份独立的本地副本。原文件的任何变动都不会破坏架上的文件，随时可以再次拖出。代价是占磁盘，由自动清理负责回收。</p>
+      </details>
+      <details>
+        <summary>复制 1Password 或 Bitwarden 等密码时，会被 Perch 记录吗？</summary>
+        <p>默认会。<b>Perch 不做任何「猜这是不是密码」的启发式识别</b>——猜错会漏，而漏掉的那一次恰恰最危险，与其给你一个不可靠的安全感，不如把事实讲明白。作为配套，我们提供一个可选开关：识别 org.nspasteboard.ConcealedType 标记（那是密码管理器主动打的标记，尊重来源声明，而不是我们去猜），命中即丢弃不入库。<b>这个开关默认关闭，请在偏好设置里自行开启。</b>另外面板头部常驻 ⏸ 暂停按钮，设置页有「抹掉全部数据」。</p>
+      </details>
+      <details>
+        <summary>为什么 Perch 坚持不做「云端同步」和所谓的「AI 自动打标」？</summary>
+        <p>剪贴板和临时文件是电脑上最私密的数据流。Perch 的定位是纯粹的「即用即走」中转站。云端同步会带来隐私泄露风险与网络延迟；而临时中转的生命周期通常只有几分钟或几小时，为了「AI 自动分类」消耗算力和等待时间，完全违背了随用随走的初衷。在 Perch 里，你的数据 100% 留在本机。</p>
+      </details>
+      <details>
+        <summary>如果我临时需要复制高度机密的内容，如何暂时关闭记录？</summary>
+        <p>面板头部常驻一个 ⏸ 一键暂停监听按钮。点击后监听立刻停止，头部显示「已暂停」；暂停期间复制的内容一条都不会上架，而且恢复后也不会倒灌进来。该暂停状态会跨应用重启保留，直到你再次点击恢复。</p>
       </details>
       <details>
         <summary>为什么上不了 Mac App Store？</summary>
         <p>因为 App Sandbox 必须关闭。开启沙盒后「把内容拖出去变成真文件」和任意路径访问会残废，而那正是 Perch 的核心能力。这是一个明确的取舍：我们选功能，放弃商店分发。所以只能从官网或 Homebrew 安装。</p>
       </details>
-      <details>
-        <summary>会不会很吃资源？</summary>
-        <p>剪贴板监听是每 0.5 秒轮询一次系统的 changeCount（macOS 没有提供变更通知 API），变了才读内容，平时基本不耗 CPU。图片和文件以文件形式存在磁盘上，索引里只存路径，所以攒几百条也不会拖慢启动。冷启动到菜单栏图标出现控制在 300ms 以内。</p>
-      </details>
-      <details>
-        <summary>支持 Windows 吗？</summary>
-        <p>不支持，而且短期内不会做。Perch 用的是原生 Swift + AppKit，深度依赖 macOS 的窗口层级、拖拽承诺（NSFilePromiseProvider）和剪贴板机制。移植等于重写，这是个已知并且接受的代价。</p>
-      </details>
-      <details>
-        <summary>有中文/英文界面吗？</summary>
-        <p>两种都有。默认简体中文，系统语言是英文时自动切换。所有界面文案走 String Catalog，欢迎提交其他语言的翻译。</p>
-      </details>
     </div>
   </div>
 </section>
 
-<section class="cta">
+<!-- ══ 收尾 ══════════════════════════════════════════════════════════ -->
+<section class="end">
   <div class="wrap">
-    <h2>让复制过的东西，有个落脚的地方。</h2>
-    <p>免费、开源、不联网。装上试两天，不合适删掉就是。</p>
-    <div class="hero-cta">
-      <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>下载 for macOS <span class="sz">DMG · 4.2 MB</span></a>
-      <a class="btn btn-g" href="/features">先看产品介绍</a>
+    <h2>即刻让文件与剪贴板「栖」在顶部</h2>
+    <p>完全免费开源，无需注册、无需账号。装上试两天，不合适删掉就是。</p>
+    <div class="cta-row">
+      <!-- ⚠️ 发布前状态（M6 还原）：换回 <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>立即下载 DMG (Universal)</a> -->
+      <a class="btn btn-p" href="https://github.com/KapiYue/perch-app" rel="noopener">去 GitHub 关注发布</a>
+      <a class="btn btn-g" href="https://github.com/KapiYue/perch-app">在 GitHub 上查看源码</a>
     </div>
+    <p class="req">发布版本将支持 macOS 14 Sonoma 及更高版本 · Apple Silicon 与 Intel 通用 · 由 Apple 公证</p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
-    <span class="copy">© 2026 · MIT License</span>
-    <nav>
-      <a href="/features">产品介绍</a>
-      <a href="/privacy">隐私政策</a>
-      <a href="/support">支持</a>
-      <a href="/credits">致谢</a>
-      <a href="https://github.com/KapiYue/perch-app">GitHub</a>
-    </nav>
-    <div class="beian">
-      <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026055717号-2</a>
-      <a class="police" href="https://beian.mps.gov.cn/#/query/webSearch?code=33010502013311" target="_blank" rel="noopener noreferrer"><img src="/assets/police-filing-icon.png" alt="" width="18" height="18">浙公网安备33010502013311号</a>
+    <div class="foot-top">
+      <a class="brand" href="/"><span class="mk"></span>Perch <small>栖架</small></a>
+      <nav>
+        <a href="/features">产品介绍</a>
+        <a href="/privacy">隐私政策</a>
+        <a href="/support">支持</a>
+        <a href="/credits">致谢</a>
+        <a href="https://github.com/KapiYue/perch-app">GitHub</a>
+      </nav>
+      <div class="tagline">© 2026 Perch · 栖架 · GPL-3.0 License · 纯本地离线架构 · 零遥测跟踪 · 专为 macOS 打造</div>
+      <div class="beian">
+        <a href="https://beian.miit.gov.cn/" target="_blank" rel="noopener noreferrer">浙ICP备2026055717号-2</a>
+        <a class="police" href="https://beian.mps.gov.cn/#/query/webSearch?code=33010502013311" target="_blank" rel="noopener noreferrer"><img src="/assets/police-filing-icon.png" alt="" width="18" height="18">浙公网安备33010502013311号</a>
+      </div>
     </div>
   </div>
 </footer>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   落地页交互。原生 JS，无依赖、无构建。
+   行为口径对齐 App
+   ══════════════════════════════════════════════════════════════════ */
+(function () {
+  'use strict';
+
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+
+  /* ── 数据 ──────────────────────────────────────────────────────── */
+  var clips = [
+    { c: 'https://perch.joy-coder.com/#download', k: 'LINK', pin: true },
+    { c: 'brew tap kapiyue/tap && brew install --cask perch', k: 'CODE', lang: 'bash' },
+    // 🚨 截图落到剪贴板是**没有文件名**的 —— App 里这一条显示的是「840 KB 图片」。
+    // 早先这里照抄参考稿写成 `screenshot_retina_2026.png`，那会让人以为
+    // 「在访达里复制一个图片文件也该出现在剪贴板区」，而事实相反（那种情况
+    // 剪贴板上只有 file-url，没有图片数据，会进文件区）。文件名一律不写。
+    { c: '屏幕截图', k: 'IMAGE', dim: '1440 × 900', sz: '840 KB', pin: true, thumb: true },
+    { c: '拖进来、复制过的文件、图片、文本、链接先「栖」在屏幕顶部，随时再取到任何地方去。', k: 'TEXT' }
+  ];
+
+  var files = [
+    { c: '接口规范 v3.pdf', k: 'PDF', sz: '2.4 MB' },
+    { c: '封面终稿.sketch', k: 'SKETCH', sz: '18.2 MB' },
+    { c: '素材打包.zip', k: 'ZIP', sz: '154 MB', pin: true },
+    { c: '演示录屏.mp4', k: 'MP4', sz: '38.1 MB' }
+  ];
+
+  var desktop = [
+    { id: 'd1', n: 'Sprint_Demo_V2.dmg', s: '24.5 MB', t: 'app' },
+    { id: 'd2', n: 'UI_Design_Tokens.json', s: '18 KB', t: 'code' },
+    { id: 'd3', n: 'Client_Feedback.md', s: '4.2 KB', t: 'doc' },
+    { id: 'd4', n: 'Project_Figma_Exports', s: '12 项', t: 'folder' }
+  ];
+
+  var tab = 'clips';
+
+  /* ── Toast ─────────────────────────────────────────────────────────
+     🚨 只给**没有对应行可闪**的动作用（模拟 ⌘C、拖入、取到编辑器）。
+     点击某一行取回走的是行内变绿，不弹 toast —— 「复制反馈只做行内」
+     是已定的产品决定，这里没有推翻它。 */
+  function toast(text, key) {
+    var box = $('#toasts');
+    var el = document.createElement('div');
+    el.className = 'toast';
+    el.textContent = text;
+    if (key) {
+      var k = document.createElement('span');
+      k.className = 'k';
+      k.textContent = key;
+      el.appendChild(k);
+    }
+    box.appendChild(el);
+    setTimeout(function () { el.remove(); }, 2400);
+  }
+
+  /* ── 渲染架上的行 ──────────────────────────────────────────────── */
+  function rowClass(k) {
+    return k === 'LINK' ? 'link' : (k === 'CODE' ? 'code' : '');
+  }
+
+  function render() {
+    var list = tab === 'clips' ? clips : files;
+    var box = $('#rows');
+    box.innerHTML = '';
+
+    $('#n-clips').textContent = clips.length;
+    $('#n-files').textContent = files.length;
+
+    if (!list.length) {
+      box.innerHTML = '<div class="rows-empty">这一区暂时是空的</div>';
+      return;
+    }
+
+    list.forEach(function (it, i) {
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'row' + (it.pin ? ' pinned' : '');
+      el.draggable = true;
+      el.dataset.i = i;
+
+      // ⌘N 只画前 9 条。口径和 App 一致：⌘N 永远指全表第 N 条。
+      var cap = i < 9 ? '⌘' + (i + 1) : (i + 1);
+      var meta = it.k + (it.lang ? ' · ' + it.lang : '') + (it.dim ? ' · ' + it.dim : '') +
+                 (it.sz ? ' · ' + it.sz : '') +
+                 (it.pin ? ' · <span class="pin">已固定</span>' : '');
+      var exp = it.pin ? '永不过期' : '11h后清理';
+
+      el.innerHTML =
+        '<span class="cap">' + cap + '</span>' +
+        (it.thumb ? '<span class="thumb" aria-hidden="true"></span>' : '') +
+        '<span class="row-body">' +
+          '<span class="row-main ' + rowClass(it.k) + '"></span>' +
+          '<span class="row-meta">' + meta + '</span>' +
+        '</span>' +
+        '<span class="row-right"><span class="take">点击取回</span><span class="exp">' + exp + '</span></span>';
+      // 内容走 textContent，避免示例文本里的尖括号被当成标签
+      $('.row-main', el).textContent = it.c;
+
+      el.addEventListener('click', function () { take(el, it); });
+      el.addEventListener('dragstart', function (e) {
+        e.dataTransfer.setData('text/plain', it.c);
+        e.dataTransfer.effectAllowed = 'copy';
+      });
+      box.appendChild(el);
+    });
+  }
+
+  /* ── 单击取回：行内变绿 1.1 秒，不弹 toast ─────────────────────── */
+  function take(el, it) {
+    if (navigator.clipboard) { navigator.clipboard.writeText(it.c).catch(function () {}); }
+    el.classList.add('copied');
+    $('.take', el).textContent = '✓ 已复制';
+    setTimeout(function () {
+      el.classList.remove('copied');
+      $('.take', el).textContent = '点击取回';
+    }, 1100);
+  }
+
+  /* ── 页签 ──────────────────────────────────────────────────────── */
+  Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) {
+    b.addEventListener('click', function () {
+      tab = b.dataset.tab;
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (o) {
+        o.setAttribute('aria-selected', String(o === b));
+      });
+      render();
+    });
+  });
+
+  /* ── 桌面文件：拖到架上 ────────────────────────────────────────── */
+  var ICONS = {
+    app: '<path d="M12 3l2.5 5.5L20 9l-4 4 1 6-5-3-5 3 1-6-4-4 5.5-.5z"/>',
+    code: '<path d="M9 8l-4 4 4 4"/><path d="M15 8l4 4-4 4"/>',
+    doc: '<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4"/>',
+    folder: '<path d="M4 7V5a1 1 0 011-1h3l2 2h5a1 1 0 011 1v2"/><rect x="3" y="8" width="18" height="12" rx="2"/>'
+  };
+  var TONES = { app: '#818cf8', code: '#60a5fa', doc: '#00e59a', folder: '#fbbf24' };
+
+  function renderFinder() {
+    var box = $('#finder');
+    box.innerHTML = '';
+    desktop.forEach(function (d) {
+      var el = document.createElement('div');
+      el.className = 'fcell' + (d.taken ? ' gone' : '');
+      el.draggable = !d.taken;
+      el.title = d.taken ? '已在架上' : '按住拖到上面的栖架';
+      el.innerHTML =
+        '<span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="' + TONES[d.t] +
+        '" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">' + ICONS[d.t] + '</svg></span>' +
+        '<span class="nm"></span><span class="sz2">' + (d.taken ? '已在架上' : d.s) + '</span>';
+      $('.nm', el).textContent = d.n;
+      el.addEventListener('dragstart', function (e) {
+        e.dataTransfer.setData('application/x-perch-file', d.id);
+        e.dataTransfer.setData('text/plain', d.n);
+        e.dataTransfer.effectAllowed = 'copy';
+      });
+      box.appendChild(el);
+    });
+  }
+
+  var sim = $('#sim');
+  sim.addEventListener('dragover', function (e) { e.preventDefault(); sim.classList.add('drop'); });
+  sim.addEventListener('dragleave', function () { sim.classList.remove('drop'); });
+  sim.addEventListener('drop', function (e) {
+    e.preventDefault();
+    sim.classList.remove('drop');
+    var id = e.dataTransfer.getData('application/x-perch-file');
+    if (!id) { return; }
+    var d = desktop.filter(function (x) { return x.id === id; })[0];
+    if (!d || d.taken) { return; }
+    d.taken = true;
+    // 拖入的文件会被**拷贝**一份，所以原位置那个格子标成「已在架上」而不是消失
+    files.unshift({ c: d.n, k: d.n.split('.').pop().toUpperCase(), sz: d.s });
+    tab = 'files';
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (o) {
+      o.setAttribute('aria-selected', String(o.dataset.tab === 'files'));
+    });
+    renderFinder();
+    render();
+    toast('已暂存「' + d.n + '」到中转架');
+  });
+
+  /* ── 模拟在别的 App 里 ⌘C ──────────────────────────────────────── */
+  Array.prototype.forEach.call(document.querySelectorAll('.copybtn'), function (b) {
+    b.addEventListener('click', function () {
+      var content = b.dataset.content;
+      var kind = b.dataset.kind.toUpperCase();
+      // 去重：命中则把它提到最前，不新增一条（和 App 的口径一致）
+      var dup = -1;
+      clips.forEach(function (c, i) { if (c.c === content) { dup = i; } });
+      if (dup !== -1) { clips.unshift(clips.splice(dup, 1)[0]); }
+      else { clips.unshift({ c: content, k: kind, lang: kind === 'CODE' ? 'bash' : undefined }); }
+      if (clips.length > 200) { clips.length = 200; }
+      tab = 'clips';
+      Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (o) {
+        o.setAttribute('aria-selected', String(o.dataset.tab === 'clips'));
+      });
+      render();
+      renderNums();
+      toast(dup !== -1 ? '已是架上内容，倒计时已重置' : '复制并自动上架到 Perch', '⌘C');
+    });
+  });
+
+  /* ── 编辑器：接收拖入 + ⌘N 取回 ────────────────────────────────── */
+  var ed = $('#ed');
+  var editor = $('#editor');
+  editor.addEventListener('dragover', function (e) { e.preventDefault(); editor.classList.add('drop'); });
+  editor.addEventListener('dragleave', function () { editor.classList.remove('drop'); });
+  editor.addEventListener('drop', function (e) {
+    e.preventDefault();
+    editor.classList.remove('drop');
+    if (e.dataTransfer.getData('application/x-perch-file')) { return; }
+    var text = e.dataTransfer.getData('text/plain');
+    if (!text) { return; }
+    ed.value += '\n\n[📥 从 Perch 拖入]\n' + text;
+    ed.scrollTop = ed.scrollHeight;
+    toast('已把架上内容拖进编辑器');
+  });
+
+  function renderNums() {
+    var box = $('#nums');
+    box.innerHTML = '';
+    clips.slice(0, 9).forEach(function (c, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'numbtn';
+      b.textContent = '⌘' + (i + 1);
+      b.title = c.c;
+      b.addEventListener('click', function () {
+        ed.value += '\n\n[⌘' + (i + 1) + ' 快速粘贴]: ' + c.c;
+        ed.scrollTop = ed.scrollHeight;
+        toast('已按 ⌘' + (i + 1) + ' 取出内容至编辑器', '⌘' + (i + 1));
+      });
+      box.appendChild(b);
+    });
+  }
+
+  /* ── brew 复制 ─────────────────────────────────────────────────── */
+  var brew = $('#brew');
+  brew.addEventListener('click', function () {
+    if (navigator.clipboard) { navigator.clipboard.writeText(brew.dataset.cmd).catch(function () {}); }
+    brew.classList.add('done');
+    toast('安装命令已复制');
+    setTimeout(function () { brew.classList.remove('done'); }, 1400);
+  });
+
+  render();
+  renderFinder();
+  renderNums();
+}());
+</script>
 
 </body>
 </html>

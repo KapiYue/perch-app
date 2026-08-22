@@ -64,7 +64,8 @@ final class ClipboardTaker: ObservableObject {
         pasteboard.clearContents()
 
         switch item.kind {
-        case .text, .link:
+        case .text, .link, .code:
+            // 代码也是纯文本 —— 取回时不做任何格式化、不加围栏，原样还回去。
             pasteboard.setString(item.preview, forType: .string)
 
         case .image, .file:

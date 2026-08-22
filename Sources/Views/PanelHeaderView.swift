@@ -47,7 +47,7 @@ struct PanelHeaderView: View {
             format: String(localized: "panel.header.summary"),
             store.clipboardItems.count,
             store.fileItems.count,
-            ByteCountFormatter.string(fromByteCount: store.totalByteSize, countStyle: .file)
+            Formatters.size(store.totalByteSize)
         )
     }
 

@@ -99,11 +99,16 @@ final class DragOutCoordinator: NSObject {
     /// 为「磁盘上还不存在」的条目描述一个承诺。
     private func promisedFile(for item: PerchItem) -> PromisedFile? {
         switch item.kind {
-        case .text, .link:
+        case .text, .link, .code:
             let content = item.preview
+            // 代码按语言给扩展名（`.swift` / `.py` / `.json`），拖到编辑器里
+            // 才有高亮。认不出扩展名就退回 .txt —— 内容一个字节都不差。
+            let ext = item.kind == .code
+                ? (CodeDetector.fileExtension(for: item.language) ?? "txt")
+                : "txt"
             return PromisedFile(
-                filename: Self.sanitizedFilename(from: content, extension: "txt"),
-                type: .plainText,
+                filename: Self.sanitizedFilename(from: content, extension: ext),
+                type: UTType(filenameExtension: ext) ?? .plainText,
                 // 显式 UTF-8，不带 BOM。系统默认编码在中文环境下会写成乱码。
                 makeData: { Data(content.utf8) }
             )

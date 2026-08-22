@@ -117,10 +117,14 @@ final class PanelController {
     }
 
     /// 鼠标进入热区或面板。
+    ///
+    /// 「悬停自动展开」可以在设置里关掉。关掉之后：
+    /// - 鼠标扫过黑条**不再**弹出面板（只剩单击 / ⌃⌘V / 菜单栏三个入口）；
+    /// - 但面板已经开着时，悬停照样按住它不收 —— 否则鼠标停在面板上它也会自己溜走。
     func mouseEntered(on screen: NSScreen? = nil) {
         isHovering = true
         cancelPendingCollapse()
-        if !panel.isVisible {
+        if !panel.isVisible, Preferences.autoExpandOnHover {
             expand(on: screen)
         }
     }
@@ -133,6 +137,9 @@ final class PanelController {
 
     /// 拖着东西悬停到黑条：展开，并在拖拽期间保持展开。
     /// 拖完了就按「有没有悬停」重新判定，不留任何粘性。
+    ///
+    /// ⚠️ 这条**不看**「悬停自动展开」那个开关。手上拖着文件停在黑条上是明确的意图，
+    /// 不是「鼠标恰好路过」；不展开的话这条主路径就直接断了。
     func dragEnteredHotZone(on screen: NSScreen? = nil) {
         isDragActive = true
         cancelPendingCollapse()
@@ -199,6 +206,27 @@ final class PanelController {
         takeCollapse = nil
     }
 
+    // MARK: - 内容变高变矮
+
+    /// 面板正开着时重新按内容定尺寸。切换类型筛选后调用。
+    ///
+    /// 展开时的高度是**那一刻**用 `hosting.fittingSize` 量出来写死进窗口的，
+    /// 之后内容自己变矮，窗口不会跟着变 —— VStack 会在多出来的空间里居中，
+    /// 看上去就是「内容吊在一个空壳中间」。
+    ///
+    /// 🚨 必须推到下一轮 runloop：这一轮 SwiftUI 还没有按新的筛选重新布局，
+    /// 现在量到的仍然是旧高度。
+    func refitToContent() {
+        guard panel.isVisible else { return }
+        DispatchQueue.main.async { [weak self] in
+            guard let self, self.panel.isVisible else { return }
+            let height = self.panel.fitToContentAndPosition(on: self.panel.screen)
+            withAnimation(.spring(response: 0.26, dampingFraction: 0.85)) {
+                self.state.contentHeight = height
+            }
+        }
+    }
+
     // MARK: - 展开与收起
 
     private func expand(on screen: NSScreen?) {
@@ -243,6 +271,10 @@ final class PanelController {
         DispatchQueue.main.asyncAfter(deadline: .now() + Self.collapseAnimationDuration) { [weak self] in
             guard let self, !self.state.isExpanded else { return }
             self.panel.orderOut(nil)
+
+            // 类型筛选回到「全部」。放在这里而不是 collapse() 开头 ——
+            // 收起动画还在跑的时候改筛选，列表会在滑出去的半路上跳一下。
+            PerchStore.shared.resetClipboardFilter()
         }
     }
 

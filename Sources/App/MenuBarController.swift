@@ -75,12 +75,12 @@ final class MenuBarController: NSObject {
     }
 
     /// 面板头部的 ⚙ 也走这里，两个入口只能有一份实现。
+    ///
+    /// 🚨 这里曾经是 `NSApp.sendAction(Selector(("showSettingsWindow:")))`，
+    /// 那条路在本 App 里**永远打不开窗口**：accessory 应用没有主菜单栏，
+    /// 响应链上根本没有接收者。详见 `SettingsWindowController`。
     static func openSettings() {
-        // LSUIElement 应用默认不是前台应用，不先 activate 的话设置窗口会开在别的窗口后面。
-        NSApp.activate(ignoringOtherApps: true)
-        // macOS 13 起 SwiftUI 的 Settings 场景由这个 selector 唤起
-        // （更早的系统是 showPreferencesWindow:，本项目最低 macOS 14，无需兼容）。
-        NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+        SettingsWindowController.shared.show()
     }
 
     @objc private func quit() {

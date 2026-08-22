@@ -5,7 +5,7 @@ import UniformTypeIdentifiers
 
 /// 把拖进来的东西变成架上的条目。
 ///
-/// 类型判定优先级和 M2 的剪贴板监听保持一致：图片 > 文件URL > 链接 > 纯文本。
+/// 类型判定优先级和 M2 的剪贴板监听保持一致：图片 > 文件URL > 链接 > 代码 > 纯文本。
 /// 唯一的差别是拖入以**文件**为主，剪贴板以文本为主。
 @MainActor
 enum DropIngestor {
@@ -87,15 +87,23 @@ enum DropIngestor {
         let filename = source.lastPathComponent
         try FileManager.default.copyItem(at: source, to: directory.appendingPathComponent(filename))
 
-        let values = try? source.resourceValues(forKeys: [.fileSizeKey])
+        let values = try? source.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
+        let size = values?.fileSize ?? 0
+        // 去重键 = 文件名 + 字节数 + 源文件修改时间，不做内容哈希（哈希一个几百 MB 的视频
+        // 只为了判重不划算）。
+        //
+        // 🚨 修改时间这一项是必须的。只用「文件名 + 字节数」的话，
+        // 两个同名同大小但**内容不同**的文件会被判成同一条（`report.pdf` 这种名字太常见了），
+        // 结果是新拖进来的那份被丢掉、架上留着旧的 —— 用户再拖出去就是错的文件。
+        // 加上修改时间之后，「同一个文件拖两次」照样命中去重，撞车则几乎不可能。
+        let modified = values?.contentModificationDate?.timeIntervalSince1970 ?? 0
         return PerchItem(
             id: id,
             kind: .file,
             preview: filename,
             blobPath: "\(id.uuidString)/\(filename)",
-            byteSize: Int64(values?.fileSize ?? 0),
-            // 文件的去重键 = 文件名 + 字节数，不做内容哈希（M3 用）。
-            dedupKey: "\(filename)|\(values?.fileSize ?? 0)"
+            byteSize: Int64(size),
+            dedupKey: "\(filename)|\(size)|\(Int(modified))"
         )
     }
 
@@ -103,7 +111,7 @@ enum DropIngestor {
         let id = UUID()
         do {
             let path = try BlobStore.write(data, filename: "content.png", for: id)
-            let size = ByteCountFormatter.string(fromByteCount: Int64(data.count), countStyle: .file)
+            let size = Formatters.size(Int64(data.count))
             PerchStore.shared.add(
                 PerchItem(
                     id: id,
@@ -128,10 +136,18 @@ enum DropIngestor {
         // 判错的代价只是图标和颜色不同，不值得为它引入一套解析。
         let isLink = trimmed.hasPrefix("http://") || trimmed.hasPrefix("https://")
 
+        // 🚨 代码判定必须排在链接**之后**：`https://…` 在代码片段里很常见，
+        // 反过来的话一行 URL 会被当成代码。
+        // 认不出语言就退回 `.text`，不做「无语言的代码」（见 CodeDetector）。
+        let language = isLink ? nil : CodeDetector.detect(trimmed)
+
+        let kind: ItemKind = isLink ? .link : (language == nil ? .text : .code)
+
         PerchStore.shared.add(
             PerchItem(
-                kind: isLink ? .link : .text,
+                kind: kind,
                 preview: trimmed,
+                language: language,
                 byteSize: Int64(trimmed.utf8.count),
                 dedupKey: trimmed
             )

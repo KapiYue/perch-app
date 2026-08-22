@@ -2,147 +2,70 @@
   "sourceLanguage": "zh-Hans",
   "version": "1.0",
   "strings": {
-    "menubar.accessibility": {
+    "clipboard.copied": {
+      "comment": "单击整行取回后的行内反馈，约 1.1 秒。不要做成全局 toast。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "栖架"
+            "value": "✓ 已复制"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perch"
+            "value": "✓ Copied"
           }
         }
       }
     },
-    "hotzone.label": {
-      "comment": "屏幕顶部黑条上的名字。只在没有刘海的屏幕上显示。",
+    "clipboard.filter.empty": {
+      "comment": "类型筛选把列表筛空时显示。不能什么都不画，否则用户会以为内容被清掉了。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "栖架"
+            "value": "这个类型下暂时没有内容"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perch"
+            "value": "Nothing of this type yet"
           }
         }
       }
     },
-    "menu.open": {
+    "clipboard.limit.badge": {
+      "comment": "剪贴板区贴着 200 条上限时，段标题上的琥珀色小标。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "打开栖架"
+            "value": "已满"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Open Perch"
+            "value": "Full"
           }
         }
       }
     },
-    "menu.settings": {
+    "clipboard.limit.help": {
+      "comment": "「已满」小标的悬停提示。要说清「淘汰」和「按时长清理」是两条独立规则。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "设置…"
+            "value": "已满，新复制的内容会顶掉最旧的一条。固定的条目不会被顶掉。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Settings…"
-          }
-        }
-      }
-    },
-    "menu.quit": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "退出栖架"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Quit Perch"
-          }
-        }
-      }
-    },
-    "panel.empty.title": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "栖架是空的"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Nothing on the shelf"
-          }
-        }
-      }
-    },
-    "panel.empty.hint": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "复制点什么，或者把文件拖进来"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Copy something, or drag files in here"
-          }
-        }
-      }
-    },
-    "settings.general": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "通用"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "General"
-          }
-        }
-      }
-    },
-    "settings.placeholder": {
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "设置项将在后续版本中逐步开放。"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Settings will be filled in as development continues."
+            "value": "Full — anything you copy now evicts the oldest item. Pinned items are never evicted."
           }
         }
       }
@@ -179,8 +102,93 @@
         }
       }
     },
-    "panel.header.title": {
-      "comment": "面板头部左上角的名字。",
+    "filter.all": {
+      "comment": "剪贴板类型筛选 pill。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "All"
+          }
+        }
+      }
+    },
+    "filter.code": {
+      "comment": "剪贴板类型筛选 pill。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "代码"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Code"
+          }
+        }
+      }
+    },
+    "filter.image": {
+      "comment": "剪贴板类型筛选 pill。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "图片"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Images"
+          }
+        }
+      }
+    },
+    "filter.link": {
+      "comment": "剪贴板类型筛选 pill。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "链接"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Links"
+          }
+        }
+      }
+    },
+    "filter.text": {
+      "comment": "剪贴板类型筛选 pill。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文本"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Text"
+          }
+        }
+      }
+    },
+    "hotzone.label": {
+      "comment": "屏幕顶部黑条上的名字。只在没有刘海的屏幕上显示。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
@@ -192,6 +200,170 @@
           "stringUnit": {
             "state": "translated",
             "value": "Perch"
+          }
+        }
+      }
+    },
+    "item.image.preview": {
+      "comment": "图片条目的列表标题，%@ = 文件大小。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ 图片"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ image"
+          }
+        }
+      }
+    },
+    "item.meta.expires": {
+      "comment": "行内副标题：%1$@ = 多久前，%2$@ = 剩余时长。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · %2$@后清理"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$@ · cleared in %2$@"
+          }
+        }
+      }
+    },
+    "item.pinned": {
+      "comment": "固定项在「多久前」后面显示这个，代替倒计时。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已固定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pinned"
+          }
+        }
+      }
+    },
+    "menu.open": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开栖架"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open Perch"
+          }
+        }
+      }
+    },
+    "menu.quit": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "退出栖架"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Quit Perch"
+          }
+        }
+      }
+    },
+    "menu.settings": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Settings…"
+          }
+        }
+      }
+    },
+    "menubar.accessibility": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "栖架"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perch"
+          }
+        }
+      }
+    },
+    "panel.empty.hint": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制点什么，或者把文件拖进来"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy something, or drag files in here"
+          }
+        }
+      }
+    },
+    "panel.empty.title": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "栖架是空的"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing on the shelf"
+          }
+        }
+      }
+    },
+    "panel.header.paused": {
+      "comment": "监听暂停时头部的提示。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已暂停"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Paused"
           }
         }
       }
@@ -213,19 +385,19 @@
         }
       }
     },
-    "panel.header.paused": {
-      "comment": "监听暂停时头部的提示。",
+    "panel.header.title": {
+      "comment": "面板头部左上角的名字。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已暂停"
+            "value": "栖架"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Paused"
+            "value": "Perch"
           }
         }
       }
@@ -281,23 +453,6 @@
         }
       }
     },
-    "clipboard.copied": {
-      "comment": "单击整行取回后的行内反馈，约 1.1 秒。不要做成全局 toast。",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "✓ 已复制"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "✓ Copied"
-          }
-        }
-      }
-    },
     "row.pin": {
       "comment": "☆ 按钮的提示。",
       "localizations": {
@@ -311,23 +466,6 @@
           "stringUnit": {
             "state": "translated",
             "value": "Pin (never auto-cleared)"
-          }
-        }
-      }
-    },
-    "row.unpin": {
-      "comment": "★ 按钮的提示。",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "取消固定"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Unpin"
           }
         }
       }
@@ -349,53 +487,405 @@
         }
       }
     },
-    "item.pinned": {
-      "comment": "固定项在「多久前」后面显示这个，代替倒计时。",
+    "row.unpin": {
+      "comment": "★ 按钮的提示。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "已固定"
+            "value": "取消固定"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Pinned"
+            "value": "Unpin"
           }
         }
       }
     },
-    "item.meta.expires": {
-      "comment": "行内副标题：%1$@ = 多久前，%2$@ = 剩余时长。",
+    "settings.concealed.footer": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ · %2$@后清理"
+            "value": "尊重密码管理器打的 org.nspasteboard.ConcealedType 标记，而不是猜内容像不像密码。可靠性取决于来源 App，所以默认关闭。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%1$@ · cleared in %2$@"
+            "value": "Respects the org.nspasteboard.ConcealedType marker set by password managers, rather than guessing whether content looks like a password. Off by default."
           }
         }
       }
     },
-    "item.image.preview": {
-      "comment": "图片条目的列表标题，%@ = 文件大小。",
+    "settings.concealed.label": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ 图片"
+            "value": "跳过被标记为机密的内容"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "%@ image"
+            "value": "Skip content marked as concealed"
+          }
+        }
+      }
+    },
+    "settings.hover.footer": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关掉后仍可单击黑条、按 ⌃⌘V 或点菜单栏图标唤出；拖文件到黑条上照常展开。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "When off, click the bar, press ⌃⌘V, or use the menu bar icon. Dragging files onto the bar still works."
+          }
+        }
+      }
+    },
+    "settings.hover.label": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "悬停时自动展开面板"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Expand on hover"
+          }
+        }
+      }
+    },
+    "settings.retention.footer": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这是唯一的自动清理依据。固定的条目永不过期，取消固定后从那一刻重新起算。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The only automatic cleanup rule. Pinned items never expire; unpinning restarts the clock."
+          }
+        }
+      }
+    },
+    "settings.retention.label": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存时长"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Keep items for"
+          }
+        }
+      }
+    },
+    "settings.retention.never": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永不清理"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Never"
+          }
+        }
+      }
+    },
+    "settings.retention.oneDay": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24 小时"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "24 hours"
+          }
+        }
+      }
+    },
+    "settings.retention.oneHour": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 小时"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 hour"
+          }
+        }
+      }
+    },
+    "settings.retention.sevenDays": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 days"
+          }
+        }
+      }
+    },
+    "settings.retention.twelveHours": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "12 小时"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "12 hours"
+          }
+        }
+      }
+    },
+    "settings.section.behavior": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "行为"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Behavior"
+          }
+        }
+      }
+    },
+    "settings.section.cleanup": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cleanup"
+          }
+        }
+      }
+    },
+    "settings.section.data": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "数据"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Data"
+          }
+        }
+      }
+    },
+    "settings.storage.footer": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一个字节都不上传：没有账号、没有云同步、没有遥测。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Not a single byte is uploaded: no account, no cloud sync, no telemetry."
+          }
+        }
+      }
+    },
+    "settings.storage.label": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "架上内容"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "On the shelf"
+          }
+        }
+      }
+    },
+    "settings.storage.path": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储位置"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Location"
+          }
+        }
+      }
+    },
+    "settings.storage.usage": {
+      "comment": "设置页占用统计：条数 · 文件数 · 占用。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪贴板 %1$lld · 文件 %2$lld · %3$@"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%1$lld clips · %2$lld files · %3$@"
+          }
+        }
+      }
+    },
+    "settings.window.title": {
+      "comment": "设置窗口标题栏。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "栖架 设置"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perch Settings"
+          }
+        }
+      }
+    },
+    "settings.wipe.button": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹掉全部数据…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase All Data…"
+          }
+        }
+      }
+    },
+    "settings.wipe.confirm.cancel": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "settings.wipe.confirm.message": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪贴板历史、文件区的全部内容以及磁盘上的本体都会被删除，无法撤销。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Your clipboard history, everything on the file shelf, and the copies stored on disk will be deleted. This cannot be undone."
+          }
+        }
+      }
+    },
+    "settings.wipe.confirm.ok": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹掉"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase"
+          }
+        }
+      }
+    },
+    "settings.wipe.confirm.title": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "抹掉全部数据？"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Erase all data?"
           }
         }
       }

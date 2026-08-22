@@ -25,6 +25,18 @@ perch-master-doc-and-prompts.md
 *-prompt.md
 *-prompts.md
 
+# 执行计划、发布清单、运维与测试手册：给维护者本人看的过程材料。
+# 2026-08-22 从仓库里撤出 —— TODO.md 里有一个服务器公网 IP，
+# release-checklist.md 里有 Apple Team ID 和腾讯云 APPID。
+# 这些都不是密钥，但属于「不必写在明面上」的东西。
+TODO.md
+docs/release-checklist.md
+docs/operations-and-tests.md
+
+# 交互参考稿（React 原型）属于设计过程材料，本地保留即可，
+# 和上面 perch-demo-v3.html 同一条口径。
+docs/design/
+
 # 交互原型与素材包属于设计过程材料，本地保留即可
 perch-demo-v3.html
 files.zip

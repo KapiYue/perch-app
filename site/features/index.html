@@ -41,9 +41,9 @@
   <div class="wrap">
     <div class="sec-head">
       <div class="kicker">01 · 面板</div>
-      <h2>上下分区，不是一个大列表。</h2>
+      <h2>上层文件架，下层剪贴板。</h2>
       <p>剪贴板条目小而多，需要横着一眼扫完；文件大而少，需要缩略图和批量操作。
-         混在一个列表里两边都憋屈，所以分成上下两段。</p>
+         混在一个列表里两边都憋屈，所以分成上下两段 —— 文件在上，剪贴板在下。</p>
     </div>
 
     <div class="anno">
@@ -54,11 +54,11 @@
         </div>
         <div class="step">
           <span class="n">2</span>
-          <div><h3>剪贴板区 · 文本列表</h3><p>每行一条，最多 200 条，超出高度滚动。前九条带 <span class="kbd">⌘1</span>–<span class="kbd">⌘9</span> 序号，图片显示真实缩略图，链接用绿色区分。</p></div>
+          <div><h3>文件区 · 网格（上层）</h3><p>每格显示图标或缩略图、文件名、大小与剩余时长。<span class="kbd">⌘</span> / <span class="kbd">Shift</span> 多选后底部浮出批量操作条。放在上层是因为它高度基本固定、条目少，不会被下面挤走。</p></div>
         </div>
         <div class="step">
           <span class="n">3</span>
-          <div><h3>文件区 · 网格</h3><p>每格显示图标或缩略图、文件名、大小与剩余时长。<span class="kbd">⌘</span> / <span class="kbd">Shift</span> 多选后底部浮出批量操作条。</p></div>
+          <div><h3>剪贴板区 · 文本列表（下层）</h3><p>每行一条，最多 200 条，超出高度滚动。前九条带 <span class="kbd">⌘1</span>–<span class="kbd">⌘9</span> 序号，图片显示真实缩略图，链接用绿色区分，代码标出语言。条目多、要滚动，所以放在下层，涨到哪儿都不影响文件区。</p></div>
         </div>
         <div class="step">
           <span class="n">4</span>
@@ -101,7 +101,7 @@
               <div class="fcell"><span class="fi">🎬</span><span class="fn">demo</span></div>
             </div>
           </div>
-          <div class="p-foot"><span class="live"></span><span>剪贴板监听中</span><span class="sp"></span><span>⌘⇧V</span></div>
+          <div class="p-foot"><span class="live"></span><span>剪贴板监听中</span><span class="sp"></span><span>⌃⌘V</span></div>
         </div>
       </div>
     </div>
@@ -224,7 +224,7 @@
         <div class="ico i-blue">⧉</div>
         <h3>去重只比最新一条</h3>
         <p>新内容如果和当前区域最新那条完全相同，不新增，只把它的倒计时重置。
-           剪贴板区和文件区各自独立比较，不做全表扫描、不算哈希。</p>
+           剪贴板区和文件区各自独立比较，不算哈希。</p>
       </div>
       <div class="card">
         <div class="ico i-purple">💾</div>
@@ -259,8 +259,8 @@
       <table>
         <thead><tr><th style="width:26%">快捷键</th><th style="width:34%">作用</th><th>说明</th></tr></thead>
         <tbody>
-          <tr><td><span class="kbd">⌘⇧V</span></td><td class="me">唤出 / 收起面板</td><td>默认值，可在设置里改</td></tr>
-          <tr><td><span class="kbd">⌘1</span> – <span class="kbd">⌘9</span></td><td class="me">取第 N 条剪贴板</td><td>全局生效，面板收起时也能用</td></tr>
+          <tr><td><span class="kbd">⌃⌘V</span></td><td class="me">唤出 / 收起面板</td><td>默认值，可在设置里改</td></tr>
+          <tr><td><span class="kbd">⌘1</span> – <span class="kbd">⌘9</span></td><td class="me">取第 N 条剪贴板</td><td>面板展开时生效，收起后立刻还给其它 App</td></tr>
           <tr><td><span class="kbd">⌘A</span></td><td class="me">全选文件</td><td>面板聚焦在文件区时</td></tr>
           <tr><td><span class="kbd">Space</span></td><td class="me">Quick Look 预览</td><td>选中条目后</td></tr>
           <tr><td><span class="kbd">Esc</span></td><td class="me">取消选择 / 收起面板</td><td>先取消选择，再按收起</td></tr>
@@ -298,7 +298,8 @@
     <h2>看完了，试一下？</h2>
     <p>免费开源，不联网，装上两天就知道合不合手。</p>
     <div class="hero-cta">
-      <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>下载 for macOS <span class="sz">DMG · 4.2 MB</span></a>
+      <!-- ⚠️ 发布前状态（M6 还原）：换回 <a class="btn btn-p" href="https://perch-dist-1305706023.cos.ap-guangzhou.myqcloud.com/dl/Perch-1.0.0.dmg" download>下载 for macOS …</a> -->
+      <a class="btn btn-p" href="https://github.com/KapiYue/perch-app" rel="noopener">去 GitHub 关注发布 <span class="sz">1.0 尚未发布</span></a>
       <a class="btn btn-g" href="/#privacy">再看一遍隐私说明</a>
     </div>
   </div>
@@ -307,7 +308,7 @@
 <footer>
   <div class="wrap">
     <a class="brand" href="/"><span class="mark"></span>Perch <small>栖架</small></a>
-    <span class="copy">© 2026 · MIT License</span>
+    <span class="copy">© 2026 · GPL-3.0 License</span>
     <nav>
       <a href="/features">产品介绍</a>
       <a href="/privacy">隐私政策</a>

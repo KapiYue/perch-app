@@ -45,6 +45,17 @@ files.zip
 site/_preview-*.html
 
 # ── 密钥与签名材料，绝对不要提交 ──
+#
+# 🔴 2026-08-22 补：TLS 私钥差一点跟着 `git add -A` 进公开仓库。
+# 原来只挡了 `*.zip`（腾讯云下载下来的压缩包），解压出来的目录一个都没挡。
+# 私钥泄露 = 有人可以冒充 perch.joy-coder.com，比源码泄露严重得多。
+*.key
+*.csr
+*.crt
+*.pem
+deploy/*_nginx/
+deploy/*_nginx.zip
+
 .env
 .env.*
 *.p12

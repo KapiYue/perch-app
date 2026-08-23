@@ -393,7 +393,8 @@ footer a:hover{color:var(--text)}
    .soon 是 Hero 下面那句说明；.brew-off 是还不能用的 brew 命令。 */
 .soon{
   margin-top:14px;font-size:13px;line-height:1.7;color:var(--dim);
-  max-width:56ch;
+  /* Hero 整段是居中的，这句不居中会在右边留一条毛边 */
+  max-width:56ch;margin-left:auto;margin-right:auto;text-align:center;
 }
 .brew-off{opacity:.45;cursor:not-allowed}
 .brew-off:hover{background:inherit}

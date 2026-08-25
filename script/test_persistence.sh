@@ -287,7 +287,163 @@ check("索引损坏：坏文件留一份 .corrupt 以备事后捞",
       manager.fileExists(atPath: DiskStore.indexURL.appendingPathExtension("corrupt").path))
 
 // ══════════════════════════════════════════════════════════════
-// 六、抹掉全部数据
+// 六、文件区多选与批量操作（M4）
+// ══════════════════════════════════════════════════════════════
+//
+// 这一段和别的地方一样，错了要等用户「选了 3 个、只走了 2 个」才看得出来。
+
+@MainActor
+func file(_ name: String, pinned: Bool = false) -> PerchItem {
+    let id = UUID()
+    makeBlobDirectory(id, filename: name)
+    return PerchItem(
+        id: id, kind: .file, preview: name,
+        blobPath: "\(id.uuidString)/\(name)",
+        byteSize: 1, dedupKey: "\(name)|1|0", isPinned: pinned
+    )
+}
+
+// 从干净的文件区开始，前面几节留下来的条目先清掉。
+store.fileItems.map(\.id).forEach { store.remove($0) }
+store.retention = .never
+
+let f1 = file("one.txt")
+let f2 = file("two.txt")
+let f3 = file("three.txt")
+[f1, f2, f3].forEach { store.add($0) }
+
+check("多选：⌘A 选中文件区全部条目",
+      { store.selectAllFiles(); return store.selectedFileIDs.count == 3 }())
+check("多选：选中集按架上顺序给出，不是 Set 的随机顺序",
+      store.selectedFileItems.map(\.id) == store.fileItems.map(\.id))
+check("多选：Esc 清空选中", { store.clearSelection(); return store.selectedFileIDs.isEmpty }())
+
+// 批量固定的口径：**全都固定了才是取消，否则一律固定**。
+store.selectAllFiles()
+store.toggleSelectedFilesPin()
+check("批量固定：一次把选中的全固定上", store.selectedFileItems.allSatisfy(\.isPinned))
+check("批量固定：全固定时 selectedFilesAllPinned 为真", store.selectedFilesAllPinned)
+
+// 造一个混合态：其中一个取消固定。
+store.togglePin(f2.id)
+check("混合态：不是全固定", !store.selectedFilesAllPinned)
+store.toggleSelectedFilesPin()
+check("批量固定：混合态下点一下是「全部固定」，不是逐个反转",
+      store.selectedFileItems.allSatisfy(\.isPinned),
+      "实得 \(store.selectedFileItems.filter(\.isPinned).count) / 3 固定")
+
+// 全固定 → 再点一下应该是全部取消，且倒计时从当下重新起算。
+let beforeUnpin = Date()
+store.toggleSelectedFilesPin()
+check("批量固定：全固定时再点一下是全部取消",
+      store.selectedFileItems.allSatisfy { !$0.isPinned })
+check("批量取消固定：保存时长从当下重新起算，不是沿用几天前的起算点",
+      store.selectedFileItems.allSatisfy { ($0.retentionStartedAt ?? .distantPast) >= beforeUnpin })
+
+// 重命名：磁盘上的本体必须跟着改，只改显示名等于骗人（拖出去的还是老名字）。
+let renamedDedup = store.fileItems.first { $0.id == f1.id }?.dedupKey
+try? store.renameFile(f1.id, to: "renamed.txt")
+let renamed = store.fileItems.first { $0.id == f1.id }
+check("重命名：列表里的名字变了", renamed?.preview == "renamed.txt")
+check("重命名：blobPath 指向新名字",
+      renamed?.blobPath == "\(f1.id.uuidString)/renamed.txt")
+check("重命名：磁盘上的本体真的改名了",
+      manager.fileExists(atPath: BlobStore.directory(for: f1.id).appendingPathComponent("renamed.txt").path)
+          && !manager.fileExists(atPath: BlobStore.directory(for: f1.id).appendingPathComponent("one.txt").path))
+check("重命名：去重键不动（同一个源文件再拖一次仍然命中，不会多出一条）",
+      renamed?.dedupKey == renamedDedup)
+
+// 重名要抛错，不能悄悄覆盖 —— 同目录下还躺着缩略图 thumb.jpg。
+try? Data("thumb".utf8).write(
+    to: BlobStore.directory(for: f1.id).appendingPathComponent(BlobStore.thumbnailFilename)
+)
+var renameThrew = false
+do {
+    try store.renameFile(f1.id, to: BlobStore.thumbnailFilename)
+} catch {
+    renameThrew = true
+}
+check("重命名：撞上已存在的文件要抛错，不能覆盖", renameThrew)
+check("重命名：抛错之后条目名字没被改坏",
+      store.fileItems.first { $0.id == f1.id }?.preview == "renamed.txt")
+
+// 批量移除：条目、本体、选中集三样一起走。
+let doomedDirectories = store.selectedFileItems.map { BlobStore.directory(for: $0.id) }
+store.selectedFileIDs = [f1.id, f3.id]
+let removed = store.removeSelectedFiles()
+check("批量移除：返回真实的移除条数", removed == 2, "实得 \(removed)")
+check("批量移除：架上只剩没选中的那一个",
+      store.fileItems.count == 1 && store.fileItems.first?.id == f2.id)
+check("批量移除：选中集跟着清空", store.selectedFileIDs.isEmpty)
+check("批量移除：blobs/ 下的本体一起删掉，不留孤儿",
+      doomedDirectories.filter { manager.fileExists(atPath: $0.path) }.count == 1,
+      "该留 1 个（没选中的那份），实得 \(doomedDirectories.filter { manager.fileExists(atPath: $0.path) }.count)")
+
+// 到期清理也要把选中态里的死 id 摘掉，否则批量操作会作用在一个已经不存在的条目上。
+let agedID = UUID()
+makeBlobDirectory(agedID, filename: "aged.txt")
+store.add(
+    PerchItem(
+        id: agedID, kind: .file, preview: "aged.txt",
+        blobPath: "\(agedID.uuidString)/aged.txt",
+        byteSize: 1, dedupKey: "aged.txt|1|0",
+        retentionStartedAt: Date().addingTimeInterval(-2 * 60 * 60)
+    )
+)
+store.selectAllFiles()
+store.retention = .oneHour   // didSet 自己会扫一遍
+check("清理：过期条目从选中集里一并摘掉",
+      !store.selectedFileIDs.contains(agedID) && !store.fileItems.contains { $0.id == agedID })
+store.retention = .never
+
+// ══════════════════════════════════════════════════════════════
+// 七、按来源 App 忽略（隐私）
+// ══════════════════════════════════════════════════════════════
+//
+// 这一段判的是「谁给的」，不是「内容像什么」—— 它是唯一拦得住
+// macOS 自带「密码」App 的机制（那个 App 一个标记都不打，2026-08-25 实测）。
+// 判错的代价是「密码被原样记进历史」，所以口径必须有脚本盯着。
+
+let defaults = UserDefaults.standard
+defaults.removeObject(forKey: Preferences.Key.excludedSourceApps)
+
+check("默认名单里有 macOS 自带的「密码」",
+      Preferences.defaultExcludedSourceApps.contains("com.apple.Passwords"))
+check("默认名单里有「钥匙串访问」",
+      Preferences.defaultExcludedSourceApps.contains("com.apple.keychainaccess"))
+check("没配置过时用默认名单",
+      Preferences.excludedSourceApps == Preferences.defaultExcludedSourceApps)
+check("默认就拦得住自带「密码」（这条规则默认是开的）",
+      Preferences.isExcludedSource("com.apple.Passwords"))
+check("bundle id 大小写不敏感",
+      Preferences.isExcludedSource("com.apple.passwords"))
+check("不在名单里的 App 照常上架",
+      !Preferences.isExcludedSource("com.apple.Safari"))
+
+// 🚨 认不出来源时**不能**忽略：宁可多记一条，也不要因为一次识别失败
+// 就把用户真正想留的内容悄悄吞掉。
+check("认不出来源（nil）时不忽略", !Preferences.isExcludedSource(nil))
+check("来源是空串时不忽略", !Preferences.isExcludedSource(""))
+
+// 用户把名单清空 = 关掉这条规则。
+// 🚨 这里是 `object(forKey:)` 而不是 `stringArray(forKey:)` 的意义所在：
+// 后者分不出「没配置过」和「配置成空」，会让「我明明清空了」变成「怎么又回来了」。
+Preferences.excludedSourceApps = []
+check("名单清空后规则关掉，不会回落到默认名单",
+      Preferences.excludedSourceApps.isEmpty && !Preferences.isExcludedSource("com.apple.Passwords"))
+
+Preferences.excludedSourceApps = ["com.example.vault"]
+check("用户自定义的名单生效", Preferences.isExcludedSource("com.example.vault"))
+check("自定义之后默认那两条不再自动生效",
+      !Preferences.isExcludedSource("com.apple.Passwords"))
+
+// 收尾：把这个键清掉，免得影响下一次运行和这台机器上的其它进程。
+defaults.removeObject(forKey: Preferences.Key.excludedSourceApps)
+check("清掉配置后回到默认名单",
+      Preferences.excludedSourceApps == Preferences.defaultExcludedSourceApps)
+
+// ══════════════════════════════════════════════════════════════
+// 八、抹掉全部数据
 // ══════════════════════════════════════════════════════════════
 
 store.wipeAllData()

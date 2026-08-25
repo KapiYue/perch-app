@@ -16,6 +16,12 @@ struct SettingsView: View {
 
     @State private var isConfirmingWipe = false
 
+    /// 「忽略这些 App」的名单编辑器。
+    /// 名单本身存在 `Preferences` 里（`@AppStorage` 支持不了 `[String]`），
+    /// 这里只留一个计数用来画按钮，sheet 关掉时重新读一次。
+    @State private var isEditingExcludedApps = false
+    @State private var excludedAppCount = Preferences.excludedSourceApps.count
+
     var body: some View {
         Form {
             // 三段，各有小标题。
@@ -39,6 +45,12 @@ struct SettingsView: View {
             }
         } message: {
             Text("settings.wipe.confirm.message")
+        }
+        .sheet(isPresented: $isEditingExcludedApps) {
+            // 关掉时重新读一次：名单是在 sheet 里直接写进 Preferences 的。
+            excludedAppCount = Preferences.excludedSourceApps.count
+        } content: {
+            ExcludedAppsView()
         }
     }
 
@@ -68,6 +80,21 @@ struct SettingsView: View {
             Toggle(isOn: $skipConcealedContent) {
                 Text("settings.concealed.label")
                 Text("settings.concealed.footer")
+            }
+
+            // 🔴 这一条和上面那条是**两套机制**，不要合并：
+            // 上面看的是来源 App 有没有主动打标（打不打由它决定，所以默认关闭）；
+            // 这一条看的是内容由谁给的（点名了就一定跳过，所以默认开着）。
+            // macOS 自带的「密码」一个标记都不打，只有这一条覆盖得到它。
+            LabeledContent {
+                Button {
+                    isEditingExcludedApps = true
+                } label: {
+                    Text(String(format: String(localized: "settings.excluded.count"), excludedAppCount))
+                }
+            } label: {
+                Text("settings.excluded.label")
+                Text("settings.excluded.footer")
             }
         } header: {
             Text("settings.section.behavior")

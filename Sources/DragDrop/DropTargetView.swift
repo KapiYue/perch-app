@@ -33,8 +33,11 @@ final class DropTargetView: NSView {
         )
     }
 
+    /// 🔴 面板的悬停**只按住、不展开**（见 `PanelController.panelMouseEntered`）。
+    /// 用同一个入口的话，面板自己那 640pt 宽的表面就成了展开触发器 ——
+    /// 收起动画期间鼠标扫过就会把它又拉回来。
     override func mouseEntered(with event: NSEvent) {
-        PanelController.shared.mouseEntered()
+        PanelController.shared.panelMouseEntered()
     }
 
     override func mouseExited(with event: NSEvent) {

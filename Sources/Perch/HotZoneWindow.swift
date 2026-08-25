@@ -166,7 +166,7 @@ final class HotZoneWindow: NSPanel {
 
     // MARK: - 回调转发
 
-    fileprivate func mouseEntered() { controller?.mouseEntered(on: screen0) }
+    fileprivate func mouseEntered() { controller?.hotZoneMouseEntered(on: screen0) }
     fileprivate func mouseExited() { controller?.mouseExited() }
     fileprivate func clicked() { controller?.toggle(on: screen0) }
     fileprivate func dragEntered() { controller?.dragEnteredHotZone(on: screen0) }

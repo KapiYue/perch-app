@@ -50,11 +50,38 @@ final class PanelController {
 
     private var pendingCollapse: DispatchWorkItem?
 
+    /// 收起之后的一小段冷却期，期间悬停不触发展开。见 `hotZoneMouseEntered`。
+    private var expandBlockedUntil = Date.distantPast
+
+    /// 面板开着期间，每隔一会儿查一次鼠标在哪。
+    ///
+    /// 🚨 **为什么不能只靠跟踪区的 `mouseExited`**，三种情况它都给不出来：
+    /// ① 收起动画期间窗口还在，鼠标扫过会发 `mouseEntered` 而不是 exited；
+    /// ② **快捷键唤出时鼠标从来没进过面板**，也就永远不会有 exited —— 面板会一直挂着；
+    /// ③ 拖拽期间系统压根不发这两个事件。
+    ///
+    /// 这是**查询**不是钩子：`NSEvent.mouseLocation` 是同步读一次当前坐标，
+    /// 不需要任何授权，也不违反「不装全局鼠标钩子」那条产品决定。
+    private var mousePollTimer: Timer?
+
+    /// 这一次面板是怎么唤出来的，决定宽限期（见 `CollapsePolicy.grace`）。
+    private var summon: CollapsePolicy.Summon = .hover
+
+    /// 鼠标已经**连续**在面板外面多久。回到面板上清零。
+    private var mouseOutsideFor: TimeInterval = 0
+
+    /// 这一次展开期间，鼠标有没有真的落到过面板/热区上。
+    /// 碰过之后就按悬停的宽限期算 —— 用户已经在用鼠标了。
+    private var hasEverHovered = false
+
+    /// 轮询间隔。面板开着才跑，开着的时间以秒计，这个频率的代价可以忽略。
+    private static let mousePollInterval: TimeInterval = 0.25
+
     /// 「取回一条 → 1.1 秒后收起」的那一次。和悬停收起是两码事，分开存。
     private var takeCollapse: DispatchWorkItem?
 
-    /// 鼠标移开后多久收起。
-    private static let hoverCollapseDelay: TimeInterval = 0.4
+    /// 鼠标移开后多久收起。判据统一放在 `CollapsePolicy`，这里只是取个别名。
+    private static let hoverCollapseDelay: TimeInterval = CollapsePolicy.hoverGrace
 
     /// 收起动画放完再把窗口 orderOut。提前 orderOut 会让动画看起来是「闪没」。
     private static let collapseAnimationDuration: TimeInterval = 0.32
@@ -86,6 +113,41 @@ final class PanelController {
         ) { _ in
             MainActor.assumeIsolated { PanelController.shared.rebuildHotZones() }
         }
+
+        // 🔴 **用户切到别的 App，就把置顶让出来。**
+        //
+        // 面板是 `.statusBar` 层级，盖在所有普通窗口之上 —— 用户点开另一个 App
+        // 却发现顶上压着一条 640pt 的面板，那就是纯粹挡路（2026-08-25 真机要求）。
+        // 鼠标轮询也会收，但那要等宽限期；切 App 是个明确得多的信号，立刻收。
+        //
+        // ⚠️ 必须用 `NSWorkspace` 的通知中心，不是 `NotificationCenter.default` ——
+        // 前者才发 App 激活事件。
+        NSWorkspace.shared.notificationCenter.addObserver(
+            forName: NSWorkspace.didActivateApplicationNotification,
+            object: nil,
+            queue: .main
+        ) { note in
+            let app = note.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication
+            let bundleID = app?.bundleIdentifier
+            MainActor.assumeIsolated {
+                PanelController.shared.otherAppActivated(bundleID: bundleID)
+            }
+        }
+    }
+
+    /// 别的 App 抢到前台了。
+    ///
+    /// 两处例外：
+    /// ① **激活的是我们自己**（AirDrop、导出失败弹窗、设置窗口都会主动 activate）——
+    ///    那不是「用户切走了」，收面板是错的；
+    /// ② **正在拖拽**：把文件拖到别的 App 上会让它激活，这时候收面板等于把落点撤掉。
+    func otherAppActivated(bundleID: String?) {
+        guard panel.isVisible else { return }
+        guard bundleID != Bundle.main.bundleIdentifier else { return }
+        guard !isDragActive else { return }
+
+        isHovering = false
+        collapse()
     }
 
     private func rebuildHotZones() {
@@ -136,21 +198,43 @@ final class PanelController {
             isHovering = false
             collapse()
         } else {
-            expand(on: screen)
+            // 菜单栏、⌃⌘V、单击黑条都走这里。前两个用户可能压根没碰鼠标，
+            // 所以按键盘唤出算（宽限期更长）；单击黑条时鼠标本来就在热区上，
+            // 轮询第一拍就会把 hasEverHovered 置真，自动退回悬停的宽限期。
+            expand(on: screen, summon: .keyboard)
         }
     }
 
-    /// 鼠标进入热区或面板。
+    /// 鼠标进入**热区（顶部黑条）**。这是悬停展开的**唯一**触发点。
     ///
     /// 「悬停自动展开」可以在设置里关掉。关掉之后：
     /// - 鼠标扫过黑条**不再**弹出面板（只剩单击 / ⌃⌘V / 菜单栏三个入口）；
     /// - 但面板已经开着时，悬停照样按住它不收 —— 否则鼠标停在面板上它也会自己溜走。
-    func mouseEntered(on screen: NSScreen? = nil) {
+    func hotZoneMouseEntered(on screen: NSScreen? = nil) {
         isHovering = true
         cancelPendingCollapse()
+
+        // 🚨 刚收起的那一小段时间里不许再展开。
+        // 收起时黑条要从 640pt 形变回 190pt，这期间它的窗口仍然是宽的，
+        // 鼠标横穿屏幕顶部就会落进那片还没缩回去的区域 —— 表现就是
+        // 「面板刚收起，鼠标根本没到刘海上，它自己又弹出来一次」（2026-08-25 真机反馈）。
+        guard Date() >= expandBlockedUntil else { return }
+
         if !panel.isVisible, Preferences.autoExpandOnHover {
-            expand(on: screen)
+            expand(on: screen, summon: .hover)
         }
+    }
+
+    /// 鼠标进入**面板**。
+    ///
+    /// 🔴 **只负责「按住不收」，绝不负责「展开」**（2026-08-25 定的口径）。
+    /// 早先这里和热区共用一个入口，于是面板自己那 640pt 宽的表面也成了展开触发器：
+    /// 收起动画那 0.32 秒里窗口还在，鼠标从上面扫过就把它又拉了回来。
+    /// 用户的原话是「鼠标并没有移入顶部刘海区，依然会再次出现一次」——
+    /// **展开的入口只有热区、单击、⌃⌘V、菜单栏这四个，面板不在其中。**
+    func panelMouseEntered() {
+        isHovering = true
+        cancelPendingCollapse()
     }
 
     /// 鼠标离开热区或面板。
@@ -169,7 +253,7 @@ final class PanelController {
         cancelPendingCollapse()
         hotZone(for: screen)?.setDragHighlighted(true)
         if !panel.isVisible {
-            expand(on: screen)
+            expand(on: screen, summon: .hover)
         }
     }
 
@@ -285,8 +369,9 @@ final class PanelController {
 
     // MARK: - 展开与收起
 
-    private func expand(on screen: NSScreen?) {
+    private func expand(on screen: NSScreen?, summon: CollapsePolicy.Summon) {
         cancelPendingCollapse()
+        self.summon = summon
 
         let target = screen ?? ScreenGeometry.activeScreen()
 
@@ -310,11 +395,80 @@ final class PanelController {
         withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
             state.isExpanded = true
         }
+
+        startMousePolling()
+    }
+
+    // MARK: - 鼠标位置轮询
+
+    private func startMousePolling() {
+        stopMousePolling()
+        mouseOutsideFor = 0
+        hasEverHovered = panelOrHotZoneContainsMouse()
+
+        let timer = Timer(timeInterval: Self.mousePollInterval, repeats: true) { _ in
+            MainActor.assumeIsolated { PanelController.shared.pollMouse() }
+        }
+        // 和 ClipboardWatcher / Janitor 同样的理由：默认模式在菜单弹开、
+        // 拖拽期间整个停摆，而那恰恰是最需要它盯着的时候。
+        RunLoop.main.add(timer, forMode: .common)
+        mousePollTimer = timer
+    }
+
+    private func stopMousePolling() {
+        mousePollTimer?.invalidate()
+        mousePollTimer = nil
+    }
+
+    /// 每 0.25 秒一次：鼠标在面板或热区上就按住，连续在外面够久就收起。
+    ///
+    /// 🚨 **这里绝对不能去调 `scheduleCollapseIfIdle()`。**
+    /// 那个方法头一行是 `cancelPendingCollapse()` —— 轮询每 0.25 秒调一次，
+    /// 而收起任务的延时是 0.4 秒，于是它每次都在到点前被下一拍取消重排，
+    /// **永远轮不到执行**。真机上的表现就是「鼠标离开了面板也不收」，
+    /// 而且不报错、无日志（2026-08-25）。
+    ///
+    /// 判据本身现在由 `./script/test_panel_collapse.sh` 盯着（含「连续在外面的时长要累计」
+    /// 那条契约）；而「不去碰那个共享的延时任务」这一点脚本够不着 —— 它在 AppKit 这一侧，
+    /// 只能靠这段注释和下面那句「直接 collapse()」守住。**改这里之前先读完上面这段。**
+    ///
+    /// 现在轮询自己累计「连续在外面多久」，够了就**直接收**，不经过那个共享的延时任务。
+    private func pollMouse() {
+        guard panel.isVisible else {
+            stopMousePolling()
+            return
+        }
+
+        let inside = panelOrHotZoneContainsMouse()
+        if inside {
+            hasEverHovered = true
+            mouseOutsideFor = 0
+            isHovering = true
+            cancelPendingCollapse()
+            return
+        }
+
+        isHovering = false
+        mouseOutsideFor += Self.mousePollInterval
+
+        guard CollapsePolicy.shouldCollapse(
+            mouseInside: false,
+            isDragActive: isDragActive,
+            isMenuOpen: isMenuOpen,
+            outsideFor: mouseOutsideFor,
+            grace: CollapsePolicy.grace(summon: summon, hasEverHovered: hasEverHovered)
+        ) else { return }
+
+        collapse()
     }
 
     private func collapse() {
         cancelPendingCollapse()
         cancelCollapseAfterTake()
+        stopMousePolling()
+        // 黑条形变回窄条要一小会儿，这期间它的窗口还是宽的。冷却掉，
+        // 否则鼠标横穿屏幕顶部会立刻把面板又拉回来。
+        expandBlockedUntil = Date().addingTimeInterval(Self.collapseAnimationDuration + 0.12)
 
         hotZones.forEach { $0.setMorphExpanded(false) }
         clearDragHighlight()

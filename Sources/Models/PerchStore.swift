@@ -63,10 +63,10 @@ final class PerchStore: ObservableObject {
     /// 剪贴板区当前的类型筛选。**只改显示，不动数据。**
     @Published var clipboardFilter: ClipboardFilter = .all
 
-    /// 文件区的选中态。多选拖出要用。
+    /// 文件区的选中态。多选拖出、批量操作条、右键菜单都以它为准。
     ///
-    /// ⌘A / Esc 这两个键盘入口做不了：面板 `canBecomeKey = false`，收不到键盘事件。
-    /// 要支持得挂全局 `NSEvent` 监听，那是 M4 连同批量操作条一起做的事。
+    /// ⌘A / Esc 走的是 Carbon 全局热键（`HotKeyCenter.syncFileKeys`），
+    /// 不是普通的键盘事件 —— 面板 `canBecomeKey = false`，键盘事件根本不会走到它上面。
     @Published var selectedFileIDs: Set<UUID> = []
 
     /// 磁盘写入的合并窗口。
@@ -370,6 +370,34 @@ final class PerchStore: ObservableObject {
         scheduleSave()
     }
 
+    // MARK: - 重命名
+
+    /// 给文件条目改名，`blobs/` 里的本体跟着改。
+    ///
+    /// 用在「拖出去之前先起个像样的名字」这条路径上 —— 拖出走的是 `.fileURL`，
+    /// 落地后的文件名就是本体的文件名，所以必须真的改磁盘，只改 `preview` 是骗人的。
+    ///
+    /// 🚨 **不动 `dedupKey`。** 它记的是「这是哪个文件」（原文件名 + 大小 + 修改时间），
+    /// 改个显示名不代表换了一个文件；动了它的话，把同一个源文件再拖一次会变成新增一条，
+    /// 架上出现两份同样的东西、只是名字不同。
+    ///
+    /// 目标名已经被占用时直接抛错（`moveItem` 自己会抛），调用方负责报给用户 ——
+    /// 静默覆盖会把同目录下的缩略图 `thumb.jpg` 冲掉。
+    func renameFile(_ id: UUID, to newName: String) throws {
+        guard let index = fileItems.firstIndex(where: { $0.id == id }),
+              let oldPath = fileItems[index].blobPath
+        else { return }
+
+        let oldURL = BlobStore.absoluteURL(forRelativePath: oldPath)
+        let newURL = oldURL.deletingLastPathComponent().appendingPathComponent(newName)
+        guard oldURL != newURL else { return }
+
+        try FileManager.default.moveItem(at: oldURL, to: newURL)
+        fileItems[index].preview = newName
+        fileItems[index].blobPath = "\(id.uuidString)/\(newName)"
+        scheduleSave()
+    }
+
     // MARK: - 选中
 
     /// `extending` 为真（按住 ⌘ / Shift）时累加，否则只选这一个。
@@ -387,6 +415,60 @@ final class PerchStore: ObservableObject {
 
     func clearSelection() {
         selectedFileIDs.removeAll()
+    }
+
+    /// ⌘A。**只管文件区** —— 剪贴板区没有选中态，那里的 ⌘A 属于前台 App。
+    func selectAllFiles() {
+        selectedFileIDs = Set(fileItems.map(\.id))
+    }
+
+    /// 当前选中的条目，**按架上的顺序**（新→旧）。
+    ///
+    /// 不能直接遍历 `selectedFileIDs` —— 那是 Set，顺序是随机的，
+    /// 打包出来的 zip 里文件顺序每次都不一样，多选拖出的落地顺序也会乱跳。
+    var selectedFileItems: [PerchItem] {
+        fileItems.filter { selectedFileIDs.contains($0.id) }
+    }
+
+    /// 批量固定 / 取消固定。
+    ///
+    /// 口径：**全都已固定才是「取消」，否则一律「固定」**。
+    /// 逐个 toggle 的话，选中集里固定态不一致时点一下会变成「有的固定有的取消」，
+    /// 用户看到的是一个没有变化的按钮 —— 点了两次还是那样。
+    func toggleSelectedFilesPin() {
+        let selected = selectedFileItems
+        guard !selected.isEmpty else { return }
+
+        let shouldPin = !selected.allSatisfy(\.isPinned)
+        for id in selectedFileIDs {
+            guard let index = fileItems.firstIndex(where: { $0.id == id }) else { continue }
+            guard fileItems[index].isPinned != shouldPin else { continue }
+            fileItems[index].isPinned = shouldPin
+            restartRetentionIfUnpinned(&fileItems[index])
+        }
+        scheduleSave()
+    }
+
+    /// 选中集是不是全都已固定。批量按钮的图标和文案按它切。
+    var selectedFilesAllPinned: Bool {
+        let selected = selectedFileItems
+        return !selected.isEmpty && selected.allSatisfy(\.isPinned)
+    }
+
+    /// 批量移除。
+    ///
+    /// 一次性删完再落一次盘，而不是循环调 `remove(_:)` —— 后者每条都排一次落盘，
+    /// 选中 30 个就是 30 次调度（虽然有合并窗口兜着，但没必要）。
+    @discardableResult
+    func removeSelectedFiles() -> Int {
+        let ids = selectedFileIDs
+        guard !ids.isEmpty else { return 0 }
+
+        fileItems.removeAll { ids.contains($0.id) }
+        selectedFileIDs.removeAll()
+        ids.forEach { BlobStore.removeDirectory(for: $0) }
+        scheduleSave()
+        return ids.count
     }
 
     /// 从某个格子起拖时，实际应该拖走哪些。

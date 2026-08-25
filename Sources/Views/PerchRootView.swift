@@ -23,6 +23,16 @@ struct PerchRootView: View {
             // 动画对象是内容而不是窗口 frame：窗口尺寸每帧都变的话，
             // 里面的 SwiftUI 布局会跟着每帧重算，掉帧非常明显。
             .offset(y: state.isExpanded ? 0 : -state.contentHeight)
+            // 面板开着的时候内容会变高变矮：拖进来一个文件、复制一条、
+            // 批量操作条一出一进 —— 窗口尺寸是展开那一刻量死的，不跟着重量的话，
+            // 内容要么被裁掉一截，要么吊在一个空壳的中间。
+            //
+            // 🚨 这三个 `onChange` 必须挂在**根视图**上。挂在文件区里的话，
+            // 「移除最后一个文件」会把文件区整段拿掉，而一个正在消失的视图
+            // 是不会再跑 onChange 的 —— 恰恰是最需要重量的那一次没了。
+            .onChange(of: store.fileItems.count) { PanelController.shared.refitToContent() }
+            .onChange(of: store.clipboardItems.count) { PanelController.shared.refitToContent() }
+            .onChange(of: store.selectedFileIDs.isEmpty) { PanelController.shared.refitToContent() }
     }
 
     private var content: some View {

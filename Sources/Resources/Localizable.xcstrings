@@ -2,6 +2,40 @@
   "sourceLanguage": "zh-Hans",
   "version": "1.0",
   "strings": {
+    "alert.cancel": {
+      "comment": "弹窗上的取消按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Cancel"
+          }
+        }
+      }
+    },
+    "alert.ok": {
+      "comment": "弹窗上那个唯一的按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
+          }
+        }
+      }
+    },
     "clipboard.copied": {
       "comment": "单击整行取回后的行内反馈，约 1.1 秒。不要做成全局 toast。",
       "localizations": {
@@ -86,6 +120,397 @@
         }
       }
     },
+    "files.action.deselect": {
+      "comment": "批量操作条：取消选中。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear"
+          }
+        }
+      }
+    },
+    "files.action.deselect.help": {
+      "comment": "取消选中的提示，带快捷键。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消选中（Esc）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Clear selection (Esc)"
+          }
+        }
+      }
+    },
+    "files.action.export": {
+      "comment": "批量操作条：导出。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export"
+          }
+        }
+      }
+    },
+    "files.action.export.help": {
+      "comment": "导出既能点也能拖，两条路都要说出来。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击存到「下载」文件夹，或直接拖到任意位置"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to save to Downloads, or drag it anywhere"
+          }
+        }
+      }
+    },
+    "files.action.pin": {
+      "comment": "批量操作条与右键菜单里的固定（短文案，行内 tooltip 用 row.pin）。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "固定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pin"
+          }
+        }
+      }
+    },
+    "files.action.remove": {
+      "comment": "批量操作条与右键菜单里的移除。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
+          }
+        }
+      }
+    },
+    "files.action.unpin": {
+      "comment": "批量操作条与右键菜单里的取消固定。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消固定"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Unpin"
+          }
+        }
+      }
+    },
+    "files.action.zip": {
+      "comment": "批量操作条：打包 ZIP。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打包 ZIP"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP"
+          }
+        }
+      }
+    },
+    "files.action.zip.help": {
+      "comment": "打包同样既能点也能拖。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "点击压成一个 zip 存到「下载」，或直接拖出去"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Click to zip into Downloads, or drag the archive out"
+          }
+        }
+      }
+    },
+    "files.airdrop.unavailable.detail": {
+      "comment": "AirDrop 不可用时的弹窗正文。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请确认 Wi-Fi 和蓝牙都开着，附近也有能接收的设备。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Check that Wi‑Fi and Bluetooth are on, and that a device nearby can receive."
+          }
+        }
+      }
+    },
+    "files.airdrop.unavailable.title": {
+      "comment": "AirDrop 不可用时的弹窗标题。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirDrop 现在用不了"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "AirDrop isn’t available"
+          }
+        }
+      }
+    },
+    "files.export.failed.title": {
+      "comment": "导出失败的弹窗标题。详情用系统给的错误描述。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出失败"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export failed"
+          }
+        }
+      }
+    },
+    "files.menu.airdrop": {
+      "comment": "右键菜单：AirDrop。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "通过 AirDrop 发送"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Send via AirDrop"
+          }
+        }
+      }
+    },
+    "files.menu.copyPath": {
+      "comment": "右键菜单：复制绝对路径。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制路径"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Copy Path"
+          }
+        }
+      }
+    },
+    "files.menu.count.suffix": {
+      "comment": "菜单项后缀，只在选中多条时追加：%lld = 几条。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "（%lld 项）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": " (%lld items)"
+          }
+        }
+      }
+    },
+    "files.menu.export": {
+      "comment": "右键菜单：导出到下载文件夹。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导出到「下载」"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export to Downloads"
+          }
+        }
+      }
+    },
+    "files.menu.open": {
+      "comment": "右键菜单：用默认应用打开。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Open"
+          }
+        }
+      }
+    },
+    "files.menu.rename": {
+      "comment": "右键菜单：改名，只在选中一条时出现。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重命名…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename…"
+          }
+        }
+      }
+    },
+    "files.menu.reveal": {
+      "comment": "右键菜单：在访达里选中它。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在访达中显示"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Show in Finder"
+          }
+        }
+      }
+    },
+    "files.menu.zip": {
+      "comment": "右键菜单：打包成 zip 放到下载文件夹。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打包 ZIP 并导出"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Export as ZIP"
+          }
+        }
+      }
+    },
+    "files.rename.confirm": {
+      "comment": "改名弹窗的确认按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重命名"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename"
+          }
+        }
+      }
+    },
+    "files.rename.detail": {
+      "comment": "改名弹窗的说明：改的是架上这份副本。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改的是架上这份副本的文件名，拖出去之后就是这个名字。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "This renames the copy on the shelf — it’s the name the file lands with when you drag it out."
+          }
+        }
+      }
+    },
+    "files.rename.title": {
+      "comment": "改名弹窗的标题。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重命名"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rename"
+          }
+        }
+      }
+    },
     "files.section": {
       "localizations": {
         "zh-Hans": {
@@ -98,6 +523,74 @@
           "stringUnit": {
             "state": "translated",
             "value": "Files"
+          }
+        }
+      }
+    },
+    "files.selectAll": {
+      "comment": "文件区段标题上的「□ 全选」。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select All"
+          }
+        }
+      }
+    },
+    "files.selectAll.help": {
+      "comment": "「全选」的提示，带快捷键。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选文件（⌘A）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select all files (⌘A)"
+          }
+        }
+      }
+    },
+    "files.selected": {
+      "comment": "批量操作条左侧：%lld = 选中了几个。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选 %lld 个"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld selected"
+          }
+        }
+      }
+    },
+    "files.zip.name": {
+      "comment": "多选打包时 zip 的名字，也是解压出来那层文件夹的名字：%lld = 几个文件。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "栖架 %lld 项"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Perch %lld items"
           }
         }
       }
@@ -505,33 +998,256 @@
       }
     },
     "settings.concealed.footer": {
+      "comment": "标记机制的脚注。必须说清楚它管不到自带「密码」，否则用户开了就以为安全。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "尊重密码管理器打的 org.nspasteboard.ConcealedType 标记，而不是猜内容像不像密码。可靠性取决于来源 App，所以默认关闭。"
+            "value": "读的是来源 App 自己打的标记（机密 / 临时 / 自动生成），不是猜内容像不像密码，所以完全取决于来源 App 规不规范。默认关闭。⚠️ macOS 自带的「密码」不打任何标记，这条对它无效 —— 它由下面那条名单覆盖。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Respects the org.nspasteboard.ConcealedType marker set by password managers, rather than guessing whether content looks like a password. Off by default."
+            "value": "Reads the markers the source app sets itself (concealed / transient / auto-generated) — no guessing at content, so it only works when the source app plays along. Off by default. ⚠️ Apple’s built-in Passwords app sets no marker at all; it is covered by the list below instead."
           }
         }
       }
     },
     "settings.concealed.label": {
+      "comment": "标记机制那条开关的标题。不要写成「跳过密码」——它跳的是打了标记的内容，不是密码。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "跳过被标记为机密的内容"
+            "value": "跳过来源 App 声明「不要记录」的内容"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Skip content marked as concealed"
+            "value": "Skip content the source app marks as do-not-record"
+          }
+        }
+      }
+    },
+    "settings.excluded.add": {
+      "comment": "名单编辑器：添加按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "添加 App…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Add App…"
+          }
+        }
+      }
+    },
+    "settings.excluded.count": {
+      "comment": "名单按钮上的文案：%lld = 名单里有几个 App。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 个 App…"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld apps…"
+          }
+        }
+      }
+    },
+    "settings.excluded.done": {
+      "comment": "名单编辑器：完成按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Done"
+          }
+        }
+      }
+    },
+    "settings.excluded.empty": {
+      "comment": "名单为空时的提示。要说清楚空 = 规则不生效。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名单是空的 —— 这条规则现在不生效"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "The list is empty — this rule is currently off"
+          }
+        }
+      }
+    },
+    "settings.excluded.footer": {
+      "comment": "来源 App 名单的脚注。要点明它不看内容、以及为什么默认开着。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名单里的 App 复制什么都不上架。这条只看内容**是谁给的**，一个字节的内容都不读。默认已经放进「密码」和「钥匙串访问」——它们不打标记，只有这条拦得住。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nothing copied in these apps reaches the shelf. This rule looks only at **which app** provided the content — it never reads the content itself. Passwords and Keychain Access are on the list by default: they set no markers, so nothing else can catch them."
+          }
+        }
+      }
+    },
+    "settings.excluded.intro": {
+      "comment": "名单编辑器顶部的说明。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "这些 App 在前台时复制的任何内容都不会上架，内容本身不会被读取。移掉全部条目就等于关掉这条规则。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "While one of these apps is frontmost, anything copied is skipped and its content is never read. Remove every entry to turn this rule off."
+          }
+        }
+      }
+    },
+    "settings.excluded.label": {
+      "comment": "来源 App 名单那一行的标题。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "忽略这些 App 复制的内容"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignore content copied from these apps"
+          }
+        }
+      }
+    },
+    "settings.excluded.notInstalled": {
+      "comment": "名单里那个 App 已经不在这台机器上了。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "（未安装）"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "(not installed)"
+          }
+        }
+      }
+    },
+    "settings.excluded.panel.message": {
+      "comment": "选取 App 的系统面板上的说明。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择复制内容不该上架的 App。"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose apps whose copied content should never reach the shelf."
+          }
+        }
+      }
+    },
+    "settings.excluded.panel.prompt": {
+      "comment": "选取 App 的系统面板上那个确认按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Choose"
+          }
+        }
+      }
+    },
+    "settings.excluded.remove": {
+      "comment": "名单编辑器：移除按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Remove"
+          }
+        }
+      }
+    },
+    "settings.excluded.reset": {
+      "comment": "名单编辑器：恢复默认按钮。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "恢复默认"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Restore Defaults"
+          }
+        }
+      }
+    },
+    "settings.excluded.title": {
+      "comment": "名单编辑器的标题。",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "忽略这些 App"
+          }
+        },
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ignored apps"
           }
         }
       }

@@ -1,14 +1,27 @@
 import AppKit
 import UniformTypeIdentifiers
 
+/// 一次拖出要送走什么。
+///
+/// 分成两种而不是「多传一个 isZip 参数」，是因为两者的**数量关系不一样**：
+/// `.items` 是 N 个条目 → N 个文件，`.zip` 是 N 个条目 → **1 个**文件。
+enum DragPayload: Sendable {
+
+    /// 逐个送走。多选拖出走这条。
+    case items([PerchItem])
+
+    /// 打包成一个 zip 再送走。批量操作条上的「打包 ZIP」走这条。
+    case zip([PerchItem])
+}
+
 /// 统一调度两条拖出路径。
 ///
 /// 策略（`pasteboardWriter(for:)`）：
 /// - `blobs/` 里已经有本体的条目 → 写 `.fileURL`，让系统自己拷；
-/// - 磁盘上还不存在的条目（文本、链接）→ 写 `FilePromiseProvider`，松手才生成。
+/// - 磁盘上还不存在的条目（文本、链接，以及 ZIP 打包）→ 写 `FilePromiseProvider`，松手才生成。
 ///
-/// 对外只暴露 `beginDrag(items:from:event:)`，多选拖出天然支持：
-/// 一个 session 里放多个 `NSDraggingItem` 即可（M4 的批量拖出直接用）。
+/// 对外只暴露 `beginDrag(_:from:event:)`，多选拖出天然支持：
+/// 一个 session 里放多个 `NSDraggingItem` 即可。
 @MainActor
 final class DragOutCoordinator: NSObject {
 
@@ -22,6 +35,7 @@ final class DragOutCoordinator: NSObject {
     ///
     /// 不能用 `.main`：目标 App 在等我们写完，主线程写大文件会把面板和菜单栏一起卡住。
     /// 不实现 `operationQueueForFilePromiseProvider` 的话系统默认就用主队列。
+    /// ZIP 打包也在这个队列上跑，同理。
     private let writeQueue: OperationQueue = {
         let queue = OperationQueue()
         queue.name = "com.joy-coder.perch.file-promise"
@@ -34,14 +48,26 @@ final class DragOutCoordinator: NSObject {
 
     /// 从 `view` 开始一次拖出。`event` 必须是那次 **mouseDown** 事件，
     /// 传 mouseDragged 进来的话拖拽图像的起点会跳一下。
-    func beginDrag(items: [PerchItem], from view: NSView & NSDraggingSource, event: NSEvent) {
+    func beginDrag(_ payload: DragPayload, from view: NSView & NSDraggingSource, event: NSEvent) {
         let origin = view.convert(event.locationInWindow, from: nil)
 
-        let draggingItems: [NSDraggingItem] = items.compactMap { item in
-            guard let writer = pasteboardWriter(for: item) else { return nil }
+        // (写进 pasteboard 的对象, 拖拽图像) —— 两种 payload 的差别到这里就收敛完了。
+        let entries: [(writer: NSPasteboardWriting, image: NSImage)]
 
-            let draggingItem = NSDraggingItem(pasteboardWriter: writer)
-            let image = dragImage(for: item)
+        switch payload {
+        case .items(let items):
+            entries = items.compactMap { item in
+                guard let writer = pasteboardWriter(for: item) else { return nil }
+                return (writer, dragImage(for: item))
+            }
+        case .zip(let items):
+            guard let writer = zipWriter(for: items) else { return }
+            entries = [(writer, zipDragImage())]
+        }
+
+        let draggingItems: [NSDraggingItem] = entries.map { entry in
+            let draggingItem = NSDraggingItem(pasteboardWriter: entry.writer)
+            let image = entry.image
             // 不设 draggingFrame 的话拖起来**完全没有图像**，用户会以为功能坏了。
             draggingItem.setDraggingFrame(
                 NSRect(
@@ -87,6 +113,40 @@ final class DragOutCoordinator: NSObject {
         return FilePromiseProvider(promise: promise, delegate: self)
     }
 
+    /// 把若干条目打包成一个 zip 的承诺。
+    ///
+    /// 用承诺而不是「先压好再拖」有两个实打实的好处：
+    /// ① 用户中途放弃（拖到一半松手在无效区域）就完全不会压，不留垃圾；
+    /// ② 压缩发生在 `writeQueue` 上，几百 MB 也不会把面板冻住。
+    func zipWriter(for items: [PerchItem]) -> NSPasteboardWriting? {
+        let sources = existingFileURLs(for: items)
+        guard !sources.isEmpty else { return nil }
+
+        let name = Self.zipName(for: items)
+        // 闭包里只留 [URL] 和 String，都是 Sendable —— 后台队列碰不到 PerchStore。
+        let promise = PromisedFile(
+            filename: "\(name).zip",
+            type: .zip,
+            write: { destination in
+                try ZipPacker.pack(sources, archiveName: name, to: destination)
+            }
+        )
+        return FilePromiseProvider(promise: promise, delegate: self)
+    }
+
+    /// zip 的名字，同时也是解压出来那层文件夹的名字。
+    ///
+    /// 单个文件用它自己的主名（`report.pdf` → `report.zip`），和访达右键「压缩」一致；
+    /// 多个文件用「栖架 N 项」，比 `归档.zip` 更认得出是从哪儿来的。
+    static func zipName(for items: [PerchItem]) -> String {
+        if items.count == 1 {
+            return ZipPacker.sanitized((items[0].preview as NSString).deletingPathExtension)
+        }
+        return ZipPacker.sanitized(
+            String(format: String(localized: "files.zip.name"), items.count)
+        )
+    }
+
     /// 条目本体在磁盘上真实存在时返回它的 URL。
     private func existingFileURL(for item: PerchItem) -> URL? {
         guard let blobPath = item.blobPath else { return nil }
@@ -94,6 +154,11 @@ final class DragOutCoordinator: NSObject {
         // 存在性必须真查一次：blobs/ 可能被用户手动清过，
         // 这时写一个指向空气的 .fileURL 出去，目标 App 只会收到一个报错弹窗。
         return FileManager.default.fileExists(atPath: url.path) ? url : nil
+    }
+
+    /// 一批条目里本体还在的那些。打包、导出、AirDrop 都以它为准。
+    func existingFileURLs(for items: [PerchItem]) -> [URL] {
+        items.compactMap { existingFileURL(for: $0) }
     }
 
     /// 为「磁盘上还不存在」的条目描述一个承诺。
@@ -110,7 +175,9 @@ final class DragOutCoordinator: NSObject {
                 filename: Self.sanitizedFilename(from: content, extension: ext),
                 type: UTType(filenameExtension: ext) ?? .plainText,
                 // 显式 UTF-8，不带 BOM。系统默认编码在中文环境下会写成乱码。
-                makeData: { Data(content.utf8) }
+                write: { destination in
+                    try Data(content.utf8).write(to: destination, options: .atomic)
+                }
             )
         case .image, .file:
             // 图片和文件的本体一定在 blobs/ 里（见 PerchItem 的硬性约定），
@@ -123,6 +190,14 @@ final class DragOutCoordinator: NSObject {
 
     private func dragImage(for item: PerchItem) -> NSImage {
         let icon = NSWorkspace.shared.icon(for: contentType(for: item))
+        icon.size = NSSize(width: 64, height: 64)
+        return icon
+    }
+
+    /// 打包拖出时手上是**一个 zip**，图像就该是 zip 的图标 ——
+    /// 用第一个文件的图标会让人以为只拖走了那一个。
+    private func zipDragImage() -> NSImage {
+        let icon = NSWorkspace.shared.icon(for: .zip)
         icon.size = NSSize(width: 64, height: 64)
         return icon
     }
@@ -190,8 +265,7 @@ extension DragOutCoordinator: NSFilePromiseProviderDelegate {
         }
 
         do {
-            let data = try provider.promise.makeData()
-            try data.write(to: url, options: .atomic)
+            try provider.promise.write(url)
             completionHandler(nil)
         } catch {
             completionHandler(error)

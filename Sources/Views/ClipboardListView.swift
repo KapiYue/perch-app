@@ -143,12 +143,18 @@ struct ClipboardListView: View {
             actionButton(
                 systemName: item.isPinned ? "star.fill" : "star",
                 tint: item.isPinned ? Color(red: 1.0, green: 0.624, blue: 0.039) : .secondary,
-                help: item.isPinned ? "row.unpin" : "row.pin"
+                help: item.isPinned
+                    ? String(localized: "row.unpin")
+                    : String(localized: "row.pin")
             ) {
                 store.togglePin(item.id)
             }
 
-            actionButton(systemName: "xmark", tint: .secondary, help: "row.remove") {
+            actionButton(
+                systemName: "xmark",
+                tint: .secondary,
+                help: String(localized: "row.remove")
+            ) {
                 store.remove(item.id)
             }
         }
@@ -255,7 +261,7 @@ struct ClipboardListView: View {
     private func actionButton(
         systemName: String,
         tint: Color,
-        help: LocalizedStringKey,
+        help: String,
         action: @escaping @MainActor () -> Void
     ) -> some View {
         Image(systemName: systemName)
@@ -263,8 +269,10 @@ struct ClipboardListView: View {
             .foregroundStyle(tint)
             .frame(width: 23, height: 23)
             .contentShape(.rect)
-            .help(help)
-            .clickAction(action)
+            // 提示交给 `clickAction` 挂到 AppKit 那层上。用 SwiftUI 的 `.help` 是不行的：
+            // 点击层是一层盖在上面的不透明视图，鼠标停住时命中的是它，
+            // 底下注册的那条提示永远查不到 —— 这两个按钮的 tooltip 一直没显示过。
+            .clickAction(help: help, action)
     }
 
     private var takenBadge: some View {

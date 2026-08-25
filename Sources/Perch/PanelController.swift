@@ -41,6 +41,13 @@ final class PanelController {
     private var isHovering = false
     private var isDragActive = false
 
+    /// 右键菜单正开着。
+    ///
+    /// 🚨 菜单弹出来的那一刻，鼠标就算还压在格子上，跟踪区也会发一次 `mouseExited`
+    /// （事件被菜单接管了）—— 不挡住的话，用户刚点开右键菜单，面板就在菜单底下收走了，
+    /// 菜单还浮在半空，选哪一项都作用在一个已经不见了的面板上。
+    private var isMenuOpen = false
+
     private var pendingCollapse: DispatchWorkItem?
 
     /// 「取回一条 → 1.1 秒后收起」的那一次。和悬停收起是两码事，分开存。
@@ -62,7 +69,11 @@ final class PanelController {
         // objectWillChange 是**变更前**发的，同一轮读到的还是旧值，所以推到下一轮再读。
         storeObserver = PerchStore.shared.objectWillChange.sink { _ in
             DispatchQueue.main.async {
-                MainActor.assumeIsolated { PanelController.shared.refreshHotZoneBadges() }
+                MainActor.assumeIsolated {
+                    PanelController.shared.refreshHotZoneBadges()
+                    // 选中态、文件条数一变，⌘A / Esc 的前提就变了（见 HotKeyCenter.syncFileKeys）。
+                    PanelController.shared.syncFileHotKeys()
+                }
             }
         }
 
@@ -102,6 +113,19 @@ final class PanelController {
 
     func refreshHotZoneBadges() {
         hotZones.forEach { $0.refreshItemCount() }
+    }
+
+    /// 按当前内容决定 ⌘A / Esc 要不要占着。面板没开就一个都不占。
+    func syncFileHotKeys() {
+        guard panel.isVisible else {
+            HotKeyCenter.shared.unregisterFileKeys()
+            return
+        }
+        let store = PerchStore.shared
+        HotKeyCenter.shared.syncFileKeys(
+            hasFiles: !store.fileItems.isEmpty,
+            hasSelection: !store.selectedFileIDs.isEmpty
+        )
     }
 
     // MARK: - 对外入口
@@ -176,6 +200,36 @@ final class PanelController {
         scheduleCollapseIfIdle()
     }
 
+    // MARK: - 右键菜单
+
+    /// 右键菜单弹出前调用。菜单开着期间面板绝对不能收。
+    func contextMenuWillOpen() {
+        isMenuOpen = true
+        cancelPendingCollapse()
+    }
+
+    /// 菜单关掉了（选了一项，或者点别处取消）。
+    ///
+    /// 按真实鼠标位置重算 `isHovering`，理由和 `dragOutEnded` 一样：
+    /// 菜单接管事件循环期间跟踪区发过 `mouseExited`，那个 false 是假的；
+    /// 反过来鼠标可能真的已经移开了，也得认出来。
+    func contextMenuDidClose() {
+        isMenuOpen = false
+        isHovering = panelOrHotZoneContainsMouse()
+        scheduleCollapseIfIdle()
+    }
+
+    /// 面板里的动作把用户送去别的 App 了（打开文件、导出后跳访达、AirDrop）。
+    ///
+    /// 这时面板留着纯属挡路 —— 和 `dragOutEnded` 是同一个道理，
+    /// 区别只是这里鼠标八成还压在面板上，所以要**无视 `isHovering`** 直接收。
+    func collapseAfterHandoff() {
+        isDragActive = false
+        isMenuOpen = false
+        isHovering = false
+        collapse()
+    }
+
     // MARK: - 取回之后收起
 
     /// 取回一条之后：行内反馈放完，连同面板一起收走（「复制完就走」）。
@@ -188,8 +242,8 @@ final class PanelController {
 
         let work = DispatchWorkItem { [weak self] in
             guard let self else { return }
-            // 拖拽中不收：东西还在半空，落点不能消失。
-            guard !self.isDragActive else { return }
+            // 拖拽中不收：东西还在半空，落点不能消失。右键菜单开着同理。
+            guard !self.isDragActive, !self.isMenuOpen else { return }
             self.isHovering = false
             self.collapse()
         }
@@ -217,9 +271,11 @@ final class PanelController {
     /// 🚨 必须推到下一轮 runloop：这一轮 SwiftUI 还没有按新的筛选重新布局，
     /// 现在量到的仍然是旧高度。
     func refitToContent() {
-        guard panel.isVisible else { return }
+        // 收起动画还在跑的时候（窗口还没 orderOut）不要动尺寸，
+        // 否则面板会在滑出去的半路上抽一下。
+        guard panel.isVisible, state.isExpanded else { return }
         DispatchQueue.main.async { [weak self] in
-            guard let self, self.panel.isVisible else { return }
+            guard let self, self.panel.isVisible, self.state.isExpanded else { return }
             let height = self.panel.fitToContentAndPosition(on: self.panel.screen)
             withAnimation(.spring(response: 0.26, dampingFraction: 0.85)) {
                 self.state.contentHeight = height
@@ -249,6 +305,7 @@ final class PanelController {
 
         // ⌘1–⌘9 只在面板展开期间归栖架，收起时立刻还给别的 App（见 HotKeyCenter）。
         HotKeyCenter.shared.registerNumberKeys()
+        syncFileHotKeys()
 
         withAnimation(.spring(response: 0.32, dampingFraction: 0.78)) {
             state.isExpanded = true
@@ -261,7 +318,9 @@ final class PanelController {
 
         hotZones.forEach { $0.setMorphExpanded(false) }
         clearDragHighlight()
+        isMenuOpen = false
         HotKeyCenter.shared.unregisterNumberKeys()
+        HotKeyCenter.shared.unregisterFileKeys()
 
         withAnimation(.spring(response: Self.collapseAnimationDuration, dampingFraction: 0.9)) {
             state.isExpanded = false
@@ -275,6 +334,9 @@ final class PanelController {
             // 类型筛选回到「全部」。放在这里而不是 collapse() 开头 ——
             // 收起动画还在跑的时候改筛选，列表会在滑出去的半路上跳一下。
             PerchStore.shared.resetClipboardFilter()
+            // 文件区的选中态同理归零。留着的话下次展开会带着一批「上次选的」，
+            // 而批量操作条会跟着冒出来 —— 用户这一轮什么都还没点。
+            PerchStore.shared.clearSelection()
         }
     }
 
@@ -285,7 +347,7 @@ final class PanelController {
 
         let work = DispatchWorkItem { [weak self] in
             guard let self else { return }
-            guard !self.isHovering, !self.isDragActive else { return }
+            guard !self.isHovering, !self.isDragActive, !self.isMenuOpen else { return }
             self.collapse()
         }
         pendingCollapse = work

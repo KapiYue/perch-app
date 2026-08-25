@@ -16,7 +16,12 @@ struct PromisedFile: Sendable {
     let type: UTType
 
     /// 内容在**用户松手那一刻**才产生 —— 这正是用承诺而不是直接给文件的意义。
-    let makeData: @Sendable () throws -> Data
+    ///
+    /// 🚨 给的是「往这个 URL 写」而不是「返回一段 Data」。
+    /// 返回 Data 的话，M4 的 ZIP 打包就得先把整个压缩包读进内存 ——
+    /// 选中几个视频就是几百 MB 常驻，而它下一步只是被写到磁盘上。
+    /// 纯文本那条路径照样一行 `Data(...).write(to:)`，没有变复杂。
+    let write: @Sendable (URL) throws -> Void
 }
 
 /// 「拖出成真文件」的承诺提供者。

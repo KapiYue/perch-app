@@ -29,12 +29,14 @@ struct PanelHeaderView: View {
 
             headerButton(
                 systemName: store.isMonitoringPaused ? "play.fill" : "pause.fill",
-                help: store.isMonitoringPaused ? "panel.resume" : "panel.pause"
+                help: store.isMonitoringPaused
+                    ? String(localized: "panel.resume")
+                    : String(localized: "panel.pause")
             ) {
                 store.isMonitoringPaused.toggle()
             }
 
-            headerButton(systemName: "gearshape", help: "panel.settings") {
+            headerButton(systemName: "gearshape", help: String(localized: "panel.settings")) {
                 MenuBarController.openSettings()
             }
         }
@@ -55,7 +57,7 @@ struct PanelHeaderView: View {
     /// 每次点击都是「非活跃窗口的第一次点击」，得靠 AppKit 那层的 `acceptsFirstMouse`。
     private func headerButton(
         systemName: String,
-        help: LocalizedStringKey,
+        help: String,
         action: @escaping @MainActor () -> Void
     ) -> some View {
         Image(systemName: systemName)
@@ -64,7 +66,8 @@ struct PanelHeaderView: View {
             .frame(width: 25, height: 25)
             .background(Color.secondary.opacity(0.12), in: .rect(cornerRadius: 7))
             .contentShape(.rect)
-            .help(help)
-            .clickAction(action)
+            // 同 `ClipboardListView.actionButton`：提示必须挂在点击层上，
+            // SwiftUI 的 `.help` 会被那层不透明视图挡住。
+            .clickAction(help: help, action)
     }
 }

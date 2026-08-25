@@ -20,14 +20,14 @@
 |---|---|
 | Pause monitoring | **⏸** in the panel header, always visible, persists across restarts |
 | Erase all data | Settings |
-| Skip content the source app marks as do-not-record | Settings, **off by default** — see below |
+| Skip content the source app marks as do-not-record | **Always on, no switch** — see below |
 | Ignore content copied from specific apps | Settings, **on by default**, pre-filled with Passwords and Keychain Access |
 
 Everything lives in `~/Library/Application Support/Perch/`. **Nothing is uploaded.** No account, no cloud sync, no telemetry, no crash reporting. Perch makes no network requests while running (except the Sparkle update check, which can be disabled).
 
 > **About passwords — please read both points.** Perch does **no content inspection whatsoever**. It never guesses whether some text looks like a password; that is a deliberate product decision (heuristics always miss something, and the one they miss is the dangerous one). It acts only on two kinds of **certain** information:
 >
-> **1. Markers set by the source app.** macOS has a community convention ([nspasteboard.org](http://nspasteboard.org/)) where some password managers flag the pasteboard with `org.nspasteboard.ConcealedType` and friends. With the matching switch on, flagged content never reaches the shelf. This is not guesswork — it respects an explicit declaration by the source app, and therefore **depends entirely on that app playing along**. Off by default.
+> **1. Markers set by the source app.** macOS has a community convention ([nspasteboard.org](http://nspasteboard.org/)) where some password managers flag the pasteboard with `org.nspasteboard.ConcealedType` and friends. Flagged content **never reaches the shelf, and there is no switch for it** — the source app has already said "don't record this"; honouring that shouldn't need your permission too. This is not guesswork, it respects an explicit declaration, and therefore **which apps it covers depends entirely on them playing along**.
 >
 > **2. Which app provided the content.** ⚠️ **Measured on 2026-08-25, macOS 26: Apple's built-in Passwords app sets no marker at all** when you copy a password — on the pasteboard it is indistinguishable from ordinary text, so the rule above cannot catch it. Perch therefore also keeps a **list of source apps**: nothing copied while one of them is frontmost reaches the shelf, and **not a single byte of the content is read**. This rule looks only at which app provided the content, never at the content itself. Passwords and Keychain Access are on the list by default, and you can edit it in Settings.
 

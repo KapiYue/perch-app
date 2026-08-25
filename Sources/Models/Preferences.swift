@@ -11,7 +11,6 @@ enum Preferences {
         static let monitoringPaused = "perch.monitoringPaused"
         static let retention = "perch.retention"
         static let autoExpandOnHover = "perch.autoExpandOnHover"
-        static let skipConcealedContent = "perch.skipConcealedContent"
         static let excludedSourceApps = "perch.excludedSourceApps"
     }
 
@@ -44,15 +43,10 @@ enum Preferences {
         set { UserDefaults.standard.set(newValue, forKey: Key.autoExpandOnHover) }
     }
 
-    /// 跳过来源 App 标记为机密的剪贴板内容（`org.nspasteboard.ConcealedType`）。
-    ///
-    /// **默认关闭**，官网隐私页和两份 README 都是这么写的，不要改默认值。
-    /// 这不是「猜内容是不是密码」（那条产品决定是明确不做），
-    /// 而是尊重来源 App 自己打的标记，可靠性取决于来源 App 规不规范。
-    static var skipConcealedContent: Bool {
-        get { UserDefaults.standard.bool(forKey: Key.skipConcealedContent) }
-        set { UserDefaults.standard.set(newValue, forKey: Key.skipConcealedContent) }
-    }
+    // 🔴 「跳过被标记为机密的内容」那个开关已经拿掉了（2026-08-25）：
+    // 标记改成永远生效，见 `ClipboardWatcher.skipMarkerTypes`。
+    // 老版本写下的 `perch.skipConcealedContent` 键留在 UserDefaults 里没人读，无害，
+    // 不专门去清 —— 清它要多一段只跑一次的迁移代码，代价比留着大。
 
     // MARK: - 按来源 App 忽略
 

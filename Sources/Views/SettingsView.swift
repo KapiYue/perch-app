@@ -12,8 +12,6 @@ struct SettingsView: View {
     @ObservedObject private var store = PerchStore.shared
 
     @AppStorage(Preferences.Key.autoExpandOnHover) private var autoExpandOnHover = true
-    @AppStorage(Preferences.Key.skipConcealedContent) private var skipConcealedContent = false
-
     @State private var isConfirmingWipe = false
 
     /// 「忽略这些 App」的名单编辑器。
@@ -37,7 +35,14 @@ struct SettingsView: View {
         // 英文文案比中文长，改动文案后要中英各量一次。
         // 🚨 高度按**英文**量，不是中文。英文脚注普遍比中文多折一行：
         // 520 时中文正好装下，英文却出滚动条、末尾那行还被切掉（2026-08-22 实测）。
-        .frame(width: 460, height: 580)
+        //
+        // 2026-08-25 实测（拿掉「跳过机密内容」那一行、脚注收短之后）：
+        // 中文需要 501，英文需要 529。取 550 留一点余量 ——
+        // **宁可多留白也不能不够**：多了只是底部空一块，少了就是「抹掉全部数据」被切掉。
+        // 量法：把这一行的 height 去掉，用 NSHostingController 的 fittingSize
+        // 在 App bundle 里跑一次（探针放 Perch.app/Contents/MacOS/ 下，
+        // 否则 Bundle.main 不是 App、量到的是一堆键名）。
+        .frame(width: 460, height: 550)
         .alert("settings.wipe.confirm.title", isPresented: $isConfirmingWipe) {
             Button("settings.wipe.confirm.cancel", role: .cancel) {}
             Button("settings.wipe.confirm.ok", role: .destructive) {
@@ -77,15 +82,10 @@ struct SettingsView: View {
                 Text("settings.hover.label")
                 Text("settings.hover.footer")
             }
-            Toggle(isOn: $skipConcealedContent) {
-                Text("settings.concealed.label")
-                Text("settings.concealed.footer")
-            }
-
-            // 🔴 这一条和上面那条是**两套机制**，不要合并：
-            // 上面看的是来源 App 有没有主动打标（打不打由它决定，所以默认关闭）；
-            // 这一条看的是内容由谁给的（点名了就一定跳过，所以默认开着）。
-            // macOS 自带的「密码」一个标记都不打，只有这一条覆盖得到它。
+            // 隐私相关的规则有两条，但**设置页只暴露这一条**：
+            // 另一条（认来源 App 打的「别记录」标记）已经改成永远生效、没有开关，
+            // 所以没有任何东西要用户去决定，也就不该占一行加一坨脚注。
+            // 那条覆盖不到 macOS 自带的「密码」（它一个标记都不打），这一条才覆盖得到。
             LabeledContent {
                 Button {
                     isEditingExcludedApps = true

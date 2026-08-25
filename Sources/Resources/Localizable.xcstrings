@@ -997,40 +997,6 @@
         }
       }
     },
-    "settings.concealed.footer": {
-      "comment": "标记机制的脚注。必须说清楚它管不到自带「密码」，否则用户开了就以为安全。",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "读的是来源 App 自己打的标记（机密 / 临时 / 自动生成），不是猜内容像不像密码，所以完全取决于来源 App 规不规范。默认关闭。⚠️ macOS 自带的「密码」不打任何标记，这条对它无效 —— 它由下面那条名单覆盖。"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Reads the markers the source app sets itself (concealed / transient / auto-generated) — no guessing at content, so it only works when the source app plays along. Off by default. ⚠️ Apple’s built-in Passwords app sets no marker at all; it is covered by the list below instead."
-          }
-        }
-      }
-    },
-    "settings.concealed.label": {
-      "comment": "标记机制那条开关的标题。不要写成「跳过密码」——它跳的是打了标记的内容，不是密码。",
-      "localizations": {
-        "zh-Hans": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "跳过来源 App 声明「不要记录」的内容"
-          }
-        },
-        "en": {
-          "stringUnit": {
-            "state": "translated",
-            "value": "Skip content the source app marks as do-not-record"
-          }
-        }
-      }
-    },
     "settings.excluded.add": {
       "comment": "名单编辑器：添加按钮。",
       "localizations": {
@@ -1100,35 +1066,35 @@
       }
     },
     "settings.excluded.footer": {
-      "comment": "来源 App 名单的脚注。要点明它不看内容、以及为什么默认开着。",
+      "comment": "来源 App 名单的脚注。刻意压到一行：只说做什么，不解释为什么。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "名单里的 App 复制什么都不上架。这条只看内容**是谁给的**，一个字节的内容都不读。默认已经放进「密码」和「钥匙串访问」——它们不打标记，只有这条拦得住。"
+            "value": "这些 App 复制的内容不上架，内容本身不会被读取。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Nothing copied in these apps reaches the shelf. This rule looks only at **which app** provided the content — it never reads the content itself. Passwords and Keychain Access are on the list by default: they set no markers, so nothing else can catch them."
+            "value": "Nothing copied in these apps reaches the shelf, and its content is never read."
           }
         }
       }
     },
     "settings.excluded.intro": {
-      "comment": "名单编辑器顶部的说明。",
+      "comment": "名单编辑器顶部的说明。这里可以比设置页那行多说一点，因为是专门打开来看的。",
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "这些 App 在前台时复制的任何内容都不会上架，内容本身不会被读取。移掉全部条目就等于关掉这条规则。"
+            "value": "这些 App 在前台时复制的任何内容都不会上架。移掉全部条目 = 关掉这条规则。\n另外，来源 App 主动标记为「别记录」的内容一律跳过，那条不需要设置。"
           }
         },
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "While one of these apps is frontmost, anything copied is skipped and its content is never read. Remove every entry to turn this rule off."
+            "value": "While one of these apps is frontmost, anything copied is skipped entirely. Remove every entry to turn this rule off.\nSeparately, content a source app marks as do-not-record is always skipped — that needs no setting."
           }
         }
       }
